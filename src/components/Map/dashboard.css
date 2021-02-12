@@ -1,0 +1,99 @@
+.db_container {
+  overflow:hidden;
+}
+
+.db_box {
+  white-space:nowrap;
+}
+
+.db_item {
+  position: absolute;
+  margin-left: 16px;
+  width:35%;
+  display:inline-block;
+}
+.db_item p {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+@media (max-width: 500px) {
+  .db_item {
+    margin-left: 16px;
+    width:35%;
+  }
+  .db_item_map {
+    position: relative;
+    left: 110px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width:23%;
+    display:inline-block;
+  }
+}
+
+@media (max-width: 780px) {
+  .db_item {
+    margin-left: 16px;
+    width:35%;
+  }
+  .db_item_map {
+    position: relative;
+    left: 35%;
+    margin-left: 20px;
+    margin-right: 20px;
+    width:23%;
+    display:inline-block;
+  }
+}
+
+@media (max-width: 900px) {
+  .db_item {
+    margin-left: 16px;
+    width:35%;
+  }
+  .db_item_map {
+    position: relative;
+    left: 110px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width:35%;
+    display:inline-block;
+  }
+}
+
+@media (max-width: 1200px) {
+  .db_item_map {
+    position: relative;
+    left: 110px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width:37%;
+    display:inline-block;
+  }
+}
+
+@media (max-width: 1800px) {
+  .db_item_map {
+    position: relative;
+    left: 40%;
+    margin-left: 20px;
+    margin-right: 20px;
+    width:53%;
+    display:inline-block;
+  }
+}
+@media (max-width: 2400px) {
+  .db_item {
+    margin-left: 16px;
+  }
+
+  .db_item_map {
+    position: relative;
+    left: 40%;
+    margin-left: 20px;
+    margin-right: 20px;
+    width:56%;
+    display:inline-block;
+  }
+}
