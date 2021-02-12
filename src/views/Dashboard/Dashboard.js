@@ -226,20 +226,20 @@ export default function Dashboard() {
             </CardHeader>
             <CardBody>
               <GridContainer justify="space-between">
-                <GridItem xs={12} sm={12} md={5}>
-                  <Table
-                    tableData={[
-                      [
-                        <img src={us_flag} alt="us_flag" key={"flag"} />,
-                        "USA",
-                        "2.920",
-                        "53.23%"
-                      ]
+                {/*<GridItem xs={12} sm={12} md={5}>*/}
+                {/*  <Table*/}
+                {/*    tableData={[*/}
+                {/*      [*/}
+                {/*        <img src={us_flag} alt="us_flag" key={"flag"} />,*/}
+                {/*        "USA",*/}
+                {/*        "2.920",*/}
+                {/*        "53.23%"*/}
+                {/*      ]*/}
 
-                    ]}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                {/*    ]}*/}
+                {/*  />*/}
+                {/*</GridItem>*/}
+                <GridItem xs={12} sm={12} md={12}>
                   <Map geodata={geodata}/>
                 </GridItem>
               </GridContainer>

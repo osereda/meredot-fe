@@ -37,8 +37,9 @@ export default function MapCenterMark(geodata) {
                     {geoposition.map((item) => {
                         return (
                             <>
-                            <ul onClick={handleChangeList}>{item}</ul>
-                            <hr/>
+                                <hr/>
+                                <ul onClick={handleChangeList}>{item}</ul>
+                                <hr/>
                             </>
                         )
                     })}

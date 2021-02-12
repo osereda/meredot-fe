@@ -273,7 +273,7 @@ function StationsTab(inputData) {
                                 </GridItem>
                             </GridContainer>
                         </GridItem>
-                        <div style={{ marginLeft: "17px", marginTop: "20px"}}>
+                        <div style={{ marginLeft: "15px", marginTop: "20px"}}>
                             <hr/>
                             <h5 className={classes.selectInfoPanel}>
                             Station&nbsp;-&nbsp;&nbsp;Station qty: {countStation}&nbsp;
