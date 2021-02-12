@@ -29,9 +29,14 @@ function StationsTab(inputData) {
 
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
-    const [tags, setTags] = React.useState(["pizza", "pasta", "parmesan"]);
     const [selectedFilter, setFilter] = React.useState(1);
-
+    const [countStation, setCountStation] = React.useState(1);
+    const [countSlots, setCountSlots] = React.useState(1);
+    const [availableSlot, setAvailableSlot] = React.useState(1);
+    const [occupiedSlot, setOccupiedSlot] = React.useState(1);
+    const [unavailableSlot, setUnavailableSlot] = React.useState(1);
+    const [onlineSlot, setOnlineSlot] = React.useState(1);
+    const [offlineSlot, setOfflineSlot] = React.useState(1);
     const handleCountry = event => {
         setSelectCountry(event.target.value);
     };
@@ -95,6 +100,41 @@ function StationsTab(inputData) {
             })
     })
 
+    const setStationData = () => {
+        let countSlots = 0;
+        let availableSlot = 0;
+        let occupiedSlot = 0;
+        stations.forEach((item, i) => {
+            item.n = ++i;
+            item.st_counts_slot = item.id_slots.length;
+            item.st_status = "online";
+            countSlots = countSlots + item.id_slots.length;
+            this.setState({ stationQty: i});
+            item.arr_slots.forEach((sl, i) => {
+                sl.id = i;
+                if(sl.slot_status === 0) {
+                    availableSlot++;
+                    sl.slot_status = 'Available';
+                }
+                if(sl.slot_status === 1) {
+                    occupiedSlot++;
+                    sl.slot_status = 'Occupied';
+                }
+                if(sl.slot_info === 0) {
+                    sl.slot_info = 'Offline';
+                }
+                if(sl.slot_info === 1) {
+                    sl.slot_info = 'Online';
+                }
+            });
+        })
+
+        this.setState({ slotQty: countSlots});
+        this.setState({ availableQty: availableSlot});
+        this.setState({ occupiedQty: occupiedSlot});
+
+    }
+
 
 
     return (
@@ -102,7 +142,7 @@ function StationsTab(inputData) {
             <GridItem xs={12}>
                 <Card>
                     <CardBody>
-                        <GridItem xs={12} sm={12} md={6}>
+                        <GridItem xs={12} sm={10} md={8}>
                             {/*<legend>Customisable Select</legend>*/}
                             <GridContainer>
                                 <GridItem xs={12} sm={4} md={4} lg={4}>
@@ -163,10 +203,7 @@ function StationsTab(inputData) {
                                 </GridItem>
                                 <GridItem xs={12} sm={4} md={4} lg={4}>
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
-                                        <InputLabel
-                                            htmlFor="simple-select"
-                                            className={classes.selectLabel}
-                                        >
+                                        <InputLabel  htmlFor="simple-select" className={classes.selectLabel}>
                                             Choose City
                                         </InputLabel>
                                         <Select
@@ -183,16 +220,10 @@ function StationsTab(inputData) {
                                                 id: "simple-select"
                                             }}
                                         >
-                                            <MenuItem
-                                                disabled
-                                                classes={{
-                                                    root: classes.selectMenuItem
-                                                }}
-                                            >
+                                            <MenuItem disabled  classes={{root: classes.selectMenuItem }}>
                                                 Choose City
                                             </MenuItem>
-                                            <MenuItem
-                                                classes={{
+                                            <MenuItem classes={{
                                                     root: classes.selectMenuItem,
                                                     selected: classes.selectMenuItemSelected
                                                 }}
@@ -214,7 +245,7 @@ function StationsTab(inputData) {
                                     </FormControl>
 
                                 </GridItem>
-                                <GridItem xs={12} sm={4} md={4} lg={4}>
+                                <GridItem xs={12} sm={4} md={4} lg={4} alignItems="flex-end">
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <CustomDropdown
                                             hoverColor="info"
@@ -242,17 +273,16 @@ function StationsTab(inputData) {
                                 </GridItem>
                             </GridContainer>
                         </GridItem>
-                        <GridItem xs={12} sm={4} md={4} lg={4}>
-                            <GridContainer>
-                                XXXXX
-                                {/*Station&nbsp;-&nbsp;&nbsp;Station qty: {this.state.stationQty}&nbsp;*/}
-                                {/*Pad qty: {this.state.slotQty}&nbsp;*/}
-                                {/*Available pads: {this.state.availableQty}&nbsp;*/}
-                                {/*Occupied pads: {this.state.occupiedQty}&nbsp;*/}
-                                {/*Out of work: {this.state.outOfWork}&nbsp;*/}
-                            </GridContainer>
-                        </GridItem>
-
+                        <div style={{ marginLeft: "17px", marginTop: "20px"}}>
+                            <hr/>
+                            <h5 className={classes.selectInfoPanel}>
+                            Station&nbsp;-&nbsp;&nbsp;Station qty: {countStation}&nbsp;
+                            Pad qty: {countSlots}&nbsp;
+                            Available pads: {availableSlot}&nbsp;
+                            Occupied pads: {occupiedSlot}&nbsp;
+                            Out of work: {unavailableSlot}&nbsp;
+                            </h5>
+                        </div>
                     </CardBody>
                 </Card>
             </GridItem>

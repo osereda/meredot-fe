@@ -39,6 +39,11 @@ const customSelectStyle = {
       }
     }
   },
+  selectInfoPanel: {
+    marginLeft: "20px"
+    // margin: "10px 10px 17px 10px !important",
+
+  },
   selectLabel: {
     fontSize: "12px",
     textTransform: "uppercase",
