@@ -1,10 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Assignment from "@material-ui/icons/Assignment";
-import Person from "@material-ui/icons/Person";
 import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
-
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Table from "components/Table/Table.js";
@@ -13,10 +10,7 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardHeader from "components/Card/CardHeader.js";
-
 import styles from "assets/jss/material-dashboard-pro-react/views/extendedTablesStyle.js";
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 import EvStationIcon from '@material-ui/icons/EvStation';
 import BatteryChargingFullIcon from '@material-ui/icons/BatteryChargingFull';
 import FormControl from "@material-ui/core/FormControl";
@@ -30,16 +24,9 @@ const useStyles = makeStyles(styles);
 function StationsTab(inputData) {
 
     const classes = useStyles();
-    // console.log("PROP data - " + inputData.inputDataSt);
     const data = inputData.inputDataSl;
-    const station = inputData.inputDataSt;
+    const stations = inputData.inputDataSt;
 
-    const outData = [];
-    const [checked, setChecked] = React.useState([]);
-    const [data1, set1Data] = useState({ hits: [] });
-
-    const [checkedA, setCheckedA] = React.useState(true);
-    const [checkedB, setCheckedB] = React.useState(false);
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
     const [tags, setTags] = React.useState(["pizza", "pasta", "parmesan"]);
@@ -54,7 +41,6 @@ function StationsTab(inputData) {
     };
 
     const handleFilter = event => {
-        console.log("XXX =" + event);
         switch (event) {
             case 'All': setFilter(1);break;
             case 'Occupied': setFilter(2);break;
@@ -77,41 +63,39 @@ function StationsTab(inputData) {
         );
     });
 
-    data.forEach(slot => {
-        let arrInner = [];
-        arrInner = slot.slice();
-        arrInner.push(fillButtons);
-        outData.push(arrInner);
+    stations.forEach(station => {
+        station.FilteredData = [];
+        station.outData.forEach(slot => {
+            let arrInner = [];
+            arrInner = slot.slice();
+            arrInner.push(fillButtons);
+            switch(selectedFilter) {
+                case 1: station.FilteredData.push(arrInner); break;
+                case 2: {slot.forEach(item => {
+                            if(item === "Occupied") station.FilteredData.push(arrInner)
+                        })
+                } break;
+                case 3: {slot.forEach(item => {
+                            if(item === "Available") station.FilteredData.push(arrInner)
+                        })
+                } break;
+                case 4: {slot.forEach(item => {
+                            if(item === "Unavailable") station.FilteredData.push(arrInner)
+                        })
+                } break;
+                case 5: {slot.forEach(item => {
+                            if(item === "Online") station.FilteredData.push(arrInner)
+                        })
+                } break;
+                case 6: {slot.forEach(item => {
+                            if(item === "Offline") station.FilteredData.push(arrInner)
+                        })
+                } break;
+                }
+            })
     })
 
-    const filter = () => {
-        let filteredArr = [];
-        if(true) {
-            filteredArr = this.state.f_rows.filter(item => {
-                if(item.location.split(',')[0] === this.state.filterCountry) {
-                    if (this.state.isAll !== true && item.arr_slots.length > 0) {
-                        item.arr_slots = item.arr_slots.filter(sl => {
-                            if (sl.slot_status === "Occupied" && document.getElementById("radio-2").checked) {
-                                return sl;
-                            }
-                            if (sl.slot_status === "Available" && document.getElementById("radio-3").checked) {
-                                return sl;
-                            }
-                            if (sl.slot_info === "Online" && document.getElementById("radio-5").checked) {
-                                return sl;
-                            }
-                        });
-                    }
-                    return item;
-                }
 
-            })
-            this.setState({rows: filteredArr});
-        }
-        else {
-            this.setState({rows: this.state.f_rows});
-        }
-    }
 
     return (
         <GridContainer>
@@ -256,45 +240,56 @@ function StationsTab(inputData) {
                                         />
                                     </FormControl>
                                 </GridItem>
-
                             </GridContainer>
-
-
+                        </GridItem>
+                        <GridItem xs={12} sm={4} md={4} lg={4}>
+                            <GridContainer>
+                                XXXXX
+                                {/*Station&nbsp;-&nbsp;&nbsp;Station qty: {this.state.stationQty}&nbsp;*/}
+                                {/*Pad qty: {this.state.slotQty}&nbsp;*/}
+                                {/*Available pads: {this.state.availableQty}&nbsp;*/}
+                                {/*Occupied pads: {this.state.occupiedQty}&nbsp;*/}
+                                {/*Out of work: {this.state.outOfWork}&nbsp;*/}
+                            </GridContainer>
                         </GridItem>
 
                     </CardBody>
                 </Card>
             </GridItem>
             <GridItem xs={12}>
-                <Card>
-                    <CardHeader color="rose" icon>
-                        <CardIcon color="rose">
-                            <EvStationIcon />
-                        </CardIcon>
-                        <h4 className={classes.cardIconTitle}>Location: Israel, Tel Aviv</h4>
-                    </CardHeader>
-                    <CardBody>
-                        <Table
-                            tableHead={[
-                                "#",
-                                "Pad ID",
-                                "Status",
-                                "Info",
-                                "Charge level, W",
-                                "Actions"
-                            ]}
-                            tableData={outData}
-                            customCellClasses={[classes.center, classes.center, classes.right]}
-                            customClassesForCells={[0, 4, 5]}
-                            customHeadCellClasses={[
-                                classes.center,
-                                classes.center,
-                                classes.right
-                            ]}
-                            customHeadClassesForCells={[0, 4, 5]}
-                        />
-                    </CardBody>
-                </Card>
+                {stations.map(item => {
+                    return(
+                    <Card>
+                        <CardHeader color="rose" icon>
+                            <CardIcon color="rose">
+                                <EvStationIcon/>
+                            </CardIcon>
+                            <h4 className={classes.cardIconTitle}>Location: Israel, Tel Aviv</h4>
+                        </CardHeader>
+                        <CardBody>
+                            <Table
+                                tableHead={[
+                                    "#",
+                                    "Pad ID",
+                                    "Status",
+                                    "Info",
+                                    "Charge level, W",
+                                    "Actions"
+                                ]}
+                                tableData={item.FilteredData}
+                                customCellClasses={[classes.center, classes.center, classes.right]}
+                                customClassesForCells={[0, 4, 5]}
+                                customHeadCellClasses={[
+                                    classes.center,
+                                    classes.center,
+                                    classes.right
+                                ]}
+                                customHeadClassesForCells={[0, 4, 5]}
+                            />
+                        </CardBody>
+                    </Card>
+                    )}
+                    )}
             </GridItem>
         </GridContainer>
     );
@@ -328,9 +323,7 @@ export default class Station extends React.Component {
         this.tmpArr = [];
 
         this.GetStationData = this.GetStationData.bind(this);
-        // this.setStationData = this.setStationData.bind(this);
-        // this.filterStation = this.filterStation.bind(this);
-        // this.handleFilter = this.handleFilter.bind(this);
+
     }
 
     GetStationData() {
@@ -390,7 +383,6 @@ export default class Station extends React.Component {
         this.setState({ slotQty: countSlots});
         this.setState({ availableQty: availableSlot});
         this.setState({ occupiedQty: occupiedSlot});
-        // this.filterStation();
     }
 
     componentDidMount() {
