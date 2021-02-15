@@ -1,10 +1,7 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
-// core components
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import Footer from "components/Footer/Footer.js";
 
@@ -65,7 +62,7 @@ export default function Pages(props) {
     }
   };
   const getActiveRoute = routes => {
-    let activeRoute = "Default Brand Text";
+    let activeRoute = "Meredot";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].views);
@@ -84,7 +81,7 @@ export default function Pages(props) {
   };
   return (
     <div>
-      <AuthNavbar brandText={getActiveRoute(routes)} {...rest} />
+      {/*<AuthNavbar brandText={getActiveRoute(routes)} {...rest} />*/}
       <div className={classes.wrapper} ref={wrapper}>
         <div
           className={classes.fullPage}

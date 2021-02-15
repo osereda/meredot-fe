@@ -4,17 +4,16 @@ import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-
-// core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
+
+import logoPM from "assets/img/logoPM.png";
+import logoZ from "assets/img/logoZ.svg";
 
 import styles from "assets/jss/material-dashboard-pro-react/layouts/adminStyle.js";
 
@@ -140,12 +139,17 @@ export default function Dashboard(props) {
     }
   };
 
+  const getLogo = () => {
+    if(localStorage.getItem("org") === 'PowerMobility') return logoPM;
+    if(localStorage.getItem("org") === 'ZMove') return logoZ;
+  }
+
   return (
     <div className={classes.wrapper}>
       <Sidebar
         routes={routes}
-        logoText={"Creative Tim"}
-        logo={logo}
+        //logoText={localStorage.getItem("user")}
+        logo={getLogo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}

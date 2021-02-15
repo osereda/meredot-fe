@@ -27,8 +27,6 @@ import ValidationForms from "views/Forms/ValidationForms.js";
 import VectorMap from "views/Maps/VectorMap.js";
 import Widgets from "views/Widgets/Widgets.js";
 import Wizard from "views/Forms/Wizard.js";
-
-// @material-ui/icons
 import Apps from "@material-ui/icons/Apps";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import DateRange from "@material-ui/icons/DateRange";
@@ -37,7 +35,6 @@ import Image from "@material-ui/icons/Image";
 import Place from "@material-ui/icons/Place";
 import Timeline from "@material-ui/icons/Timeline";
 import WidgetsIcon from "@material-ui/icons/Widgets";
-// import Dashboard from "@material-ui/icons/Dashboard";
 import Unarchive from "@material-ui/icons/Unarchive";
 import TwoWheelerIcon from '@material-ui/icons/TwoWheeler';
 import EvStationIcon from '@material-ui/icons/EvStation';
