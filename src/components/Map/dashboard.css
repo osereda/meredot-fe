@@ -8,7 +8,7 @@
 
 .db_item {
   position: absolute;
-  margin-left: 16px;
+  /*margin-left: 16px;*/
   width:35%;
   display:inline-block;
 }
@@ -19,7 +19,7 @@
 
 @media (max-width: 500px) {
   .db_item {
-    margin-left: 16px;
+    /*margin-left: 16px;*/
     width:35%;
   }
   .db_item_map {
@@ -34,7 +34,7 @@
 
 @media (max-width: 780px) {
   .db_item {
-    margin-left: 16px;
+    /*margin-left: 16px;*/
     width:35%;
   }
   .db_item_map {
@@ -49,7 +49,7 @@
 
 @media (max-width: 900px) {
   .db_item {
-    margin-left: 16px;
+    /*margin-left: 16px;*/
     width:35%;
   }
   .db_item_map {
@@ -85,7 +85,7 @@
 }
 @media (max-width: 2400px) {
   .db_item {
-    margin-left: 16px;
+    /*margin-left: 16px;*/
   }
 
   .db_item_map {

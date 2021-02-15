@@ -45,38 +45,13 @@ import {useEffect, useState} from "react";
 // import Warning from "@material-ui/icons/EvStation";
 import Station from "@material-ui/icons/EvStation";
 import Slot from '@material-ui/icons/BatteryChargingFull';
-// import Scooter from "@material-ui/icons/TwoWheeler";
+import Scooter from "@material-ui/icons/TwoWheeler";
 import Euro from '@material-ui/icons/Euro';
-
-import LanguageIcon from '@material-ui/icons/Language';
 
 import Map from "components/Map/Map";
 import configData from "../../config.json"
 
-const us_flag = require("assets/img/flags/US.png");
-const de_flag = require("assets/img/flags/DE.png");
-const au_flag = require("assets/img/flags/AU.png");
-const gb_flag = require("assets/img/flags/GB.png");
-const ro_flag = require("assets/img/flags/RO.png");
-const br_flag = require("assets/img/flags/BR.png");
-
-var mapData = {
-  AU: 760,
-  BR: 550,
-  CA: 120,
-  DE: 1300,
-  FR: 540,
-  GB: 690,
-  GE: 200,
-  IN: 200,
-  RO: 600,
-  RU: 300,
-  US: 2920
-};
-
 const useStyles = makeStyles(styles);
-
-
 
 export default function Dashboard() {
   const classes = useStyles();
@@ -86,6 +61,7 @@ export default function Dashboard() {
   const [slotQty, setSlotQty] = useState(0);
   const [availableQty, setAvailableQty] = useState(0);
   const [geodata, setGeodata] = useState([]);
+  const [outData, setOutData] = useState([]);
 
   const  countParameterStation = (data) => {
     let countStation = 0;
@@ -94,16 +70,20 @@ export default function Dashboard() {
     let geodata = [];
     data.forEach((item) => {
       setStationQty(++countStation);
-      item.geodata ? geodata.push(item.geodata + ',' + item.location) : geodata.push([51, 31]);
-      setGeodata(geodata);
+
       if(item.arr_slots.length > 0) {
         setSlotQty(countSlot += item.arr_slots.length);
       }
+      // geodata.push(','+ countSlot);
       item.arr_slots.forEach(slot => {
         if(slot.slot_status === 0) {
           setAvailableQty(++countAva)
         }
       })
+      item.geodata ? geodata.push(item.geodata + ';' + item.location +';'+ countSlot +';'+countAva ) : geodata.push([32.8, 35.1]);
+      setGeodata(geodata);
+      // geodata.push(','+countAva);
+      // setGeodata(geodata);
     });
   };
 
@@ -182,14 +162,14 @@ export default function Dashboard() {
           <Card>
             <CardHeader color="success" stats icon>
               <CardIcon color="success">
-                <Slot/>
+                <Scooter/>
               </CardIcon>
               <p className={classes.cardCategory}>Scooters</p>
               <h3 className={classes.cardTitle}>{availableQty}/{scooterQty}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                <LocalOffer />
+                <Scooter />
                 {slotQty - availableQty} ON CHARGE
               </div>
             </CardFooter>

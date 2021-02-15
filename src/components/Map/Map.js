@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import MapComponent from "./MapComponent";
 import './dashboard.css';
+import GridContainer from "../Grid/GridContainer";
+import Table from "../ReactTable/ReactTable";
 
 export default function MapCenterMark(geodata) {
-    let lat=51.4949045;
-    let lon=31.2946714;
+    let lat=32.8;
+    let lon=35.1;
+    let A = geodata.geodata;
+    // console.log('A -'+ A);
     let geopositionArr = Object.keys(geodata).map((key) => [geodata[key]]);
     let geoposition = geopositionArr[0][0];
     if(geoposition && geoposition.length > 0) {
@@ -12,9 +16,23 @@ export default function MapCenterMark(geodata) {
         lat = parseFloat(newCoords[0]);
         lon = parseFloat(newCoords[1]);
     }
-    else {
-        //geoposition = ['0,0']
+
+    let showArr = [];
+    console.log("geopositionArr-> "+geopositionArr);
+    geopositionArr.forEach(item => {
+        if(item){
+            //showArr =  item.split(";")[0];
+            console.log("showArr-> "+showArr);
+        };
+    })
+
+    const setMapInfoArray = () => {
+
     }
+
+    // $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=47.217954&lon=-1.552918', function(data){
+    //     console.log(data.address.road);
+    // });
 
     const [coords, setCoords] = useState([lat, lon]);
 
@@ -38,8 +56,9 @@ export default function MapCenterMark(geodata) {
                         return (
                             <>
                                 <hr/>
-                                <ul onClick={handleChangeList}>{item}</ul>
-                                <hr/>
+                                <ul onClick={handleChangeList}
+                                    style={{ marginLeft: "0", paddingLeft: "0" }}
+                                >{item}</ul>
                             </>
                         )
                     })}
