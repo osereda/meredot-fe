@@ -1,12 +1,8 @@
-/*eslint-disable*/
 import React from "react";
 import PropTypes from "prop-types";
-// javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import { NavLink } from "react-router-dom";
 import cx from "classnames";
-
-// @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -15,13 +11,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Hidden from "@material-ui/core/Hidden";
 import Collapse from "@material-ui/core/Collapse";
 import Icon from "@material-ui/core/Icon";
-
-// core components
 import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
-
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.js";
 
-import avatar from "assets/img/faces/avatar.jpg";
+import avatarImg from "assets/img/faces/daniel.jpeg";
+import logoPM from "assets/img/logoPM.png";
+import logoZ from "assets/img/logoZ.svg";
 
 var ps;
 
@@ -213,28 +208,10 @@ class Sidebar extends React.Component {
           </ListItem>
         );
       }
-      const innerNavLinkClasses =
-        classes.collapseItemLink +
-        " " +
-        cx({
-          [" " + classes[color]]: this.activeRoute(prop.path)
-        });
-      const collapseItemMini =
-        classes.collapseItemMini +
-        " " +
-        cx({
-          [classes.collapseItemMiniRTL]: rtlActive
-        });
-      const navLinkClasses =
-        classes.itemLink +
-        " " +
-        cx({
-          [" " + classes[color]]: this.activeRoute(prop.path)
-        });
-      const itemText =
-        classes.itemText +
-        " " +
-        cx({
+      const innerNavLinkClasses = classes.collapseItemLink +" " +cx({[" " + classes[color]]: this.activeRoute(prop.path)});
+      const collapseItemMini = classes.collapseItemMini +" " +cx({[classes.collapseItemMiniRTL]: rtlActive });
+      const navLinkClasses = classes.itemLink +" " + cx({[" " + classes[color]]: this.activeRoute(prop.path) });
+      const itemText = classes.itemText + " " + cx({
           [classes.itemTextMini]:
             this.props.miniActive && this.state.miniActive,
           [classes.itemTextMiniRTL]:
@@ -306,53 +283,30 @@ class Sidebar extends React.Component {
       bgColor,
       rtlActive
     } = this.props;
-    const itemText =
-      classes.itemText +
-      " " +
+    const itemText = classes.itemText +  " " +
       cx({
         [classes.itemTextMini]: this.props.miniActive && this.state.miniActive,
         [classes.itemTextMiniRTL]:
           rtlActive && this.props.miniActive && this.state.miniActive,
         [classes.itemTextRTL]: rtlActive
       });
-    const collapseItemText =
-      classes.collapseItemText +
-      " " +
-      cx({
+    const collapseItemText = classes.collapseItemText + " " + cx({
         [classes.collapseItemTextMini]:
           this.props.miniActive && this.state.miniActive,
         [classes.collapseItemTextMiniRTL]:
           rtlActive && this.props.miniActive && this.state.miniActive,
         [classes.collapseItemTextRTL]: rtlActive
       });
-    const userWrapperClass =
-      classes.user +
-      " " +
-      cx({
-        [classes.whiteAfter]: bgColor === "white"
-      });
-    const caret =
-      classes.caret +
-      " " +
-      cx({
-        [classes.caretRTL]: rtlActive
-      });
-    const collapseItemMini =
-      classes.collapseItemMini +
-      " " +
-      cx({
-        [classes.collapseItemMiniRTL]: rtlActive
-      });
-    const photo =
-      classes.photo +
-      " " +
-      cx({
-        [classes.photoRTL]: rtlActive
-      });
+    const userWrapperClass =  classes.user + " " + cx({[classes.whiteAfter]: bgColor === "white" });
+    const caret =  classes.caret + " " +   cx({   [classes.caretRTL]: rtlActive  });
+    const collapseItemMini = classes.collapseItemMini +" " + cx({
+        [classes.collapseItemMiniRTL]: rtlActive  });
+    const photo = classes.photo + " " + cx({[classes.photoRTL]: rtlActive });
+    let userAvatar = localStorage.getItem("user") === "Daniel" ? avatarImg : "USER"
     var user = (
       <div className={userWrapperClass}>
         <div className={photo}>
-          <img src={avatar} className={classes.avatarImg} alt="..." />
+          <img src={userAvatar} className={classes.avatarImg} alt="..." />
         </div>
         <List className={classes.list}>
           <ListItem className={classes.item + " " + classes.userItem}>
@@ -362,14 +316,10 @@ class Sidebar extends React.Component {
               onClick={() => this.openCollapse("openAvatar")}
             >
               <ListItemText
-                primary={rtlActive ? "تانيا أندرو" : "Tania Andrew"}
+                primary={localStorage.getItem("user") === 'Daniel' ? "Daniel Ingber" : "user"}
                 secondary={
                   <b
-                    className={
-                      caret +
-                      " " +
-                      classes.userCaret +
-                      " " +
+                    className={ caret +" " + classes.userCaret +" " +
                       (this.state.openAvatar ? classes.caretActive : "")
                     }
                   />
@@ -388,51 +338,51 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "مع" : "MP"}
+                      MP
                     </span>
                     <ListItemText
-                      primary={rtlActive ? "ملفي" : "My Profile"}
+                      primary="My Profile"
                       disableTypography={true}
                       className={collapseItemText}
                     />
                   </NavLink>
                 </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="#"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {rtlActive ? "هوع" : "EP"}
-                    </span>
-                    <ListItemText
-                      primary={
-                        rtlActive ? "تعديل الملف الشخصي" : "Edit Profile"
-                      }
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="#"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {rtlActive ? "و" : "S"}
-                    </span>
-                    <ListItemText
-                      primary={rtlActive ? "إعدادات" : "Settings"}
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
+                {/*<ListItem className={classes.collapseItem}>*/}
+                {/*  <NavLink*/}
+                {/*    to="#"*/}
+                {/*    className={*/}
+                {/*      classes.itemLink + " " + classes.userCollapseLinks*/}
+                {/*    }*/}
+                {/*  >*/}
+                {/*    <span className={collapseItemMini}>*/}
+                {/*      EP*/}
+                {/*    </span>*/}
+                {/*    <ListItemText*/}
+                {/*      primary={*/}
+                {/*        "Edit Profile"*/}
+                {/*      }*/}
+                {/*      disableTypography={true}*/}
+                {/*      className={collapseItemText}*/}
+                {/*    />*/}
+                {/*  </NavLink>*/}
+                {/*</ListItem>*/}
+                {/*<ListItem className={classes.collapseItem}>*/}
+                {/*  <NavLink*/}
+                {/*    to="#"*/}
+                {/*    className={*/}
+                {/*      classes.itemLink + " " + classes.userCollapseLinks*/}
+                {/*    }*/}
+                {/*  >*/}
+                {/*    <span className={collapseItemMini}>*/}
+                {/*      S*/}
+                {/*    </span>*/}
+                {/*    <ListItemText*/}
+                {/*      primary="Settings"*/}
+                {/*      disableTypography={true}*/}
+                {/*      className={collapseItemText}*/}
+                {/*    />*/}
+                {/*  </NavLink>*/}
+                {/*</ListItem>*/}
               </List>
             </Collapse>
           </ListItem>
@@ -443,9 +393,7 @@ class Sidebar extends React.Component {
       <List className={classes.list}>{this.createLinks(routes)}</List>
     );
 
-    const logoNormal =
-      classes.logoNormal +
-      " " +
+    const logoNormal = classes.logoNormal + " " +
       cx({
         [classes.logoNormalSidebarMini]:
           this.props.miniActive && this.state.miniActive,
@@ -453,18 +401,8 @@ class Sidebar extends React.Component {
           rtlActive && this.props.miniActive && this.state.miniActive,
         [classes.logoNormalRTL]: rtlActive
       });
-    const logoMini =
-      classes.logoMini +
-      " " +
-      cx({
-        [classes.logoMiniRTL]: rtlActive
-      });
-    const logoClasses =
-      classes.logo +
-      " " +
-      cx({
-        [classes.whiteAfter]: bgColor === "white"
-      });
+    const logoMini = classes.logoMini +" " +cx({[classes.logoMiniRTL]: rtlActive });
+    const logoClasses = classes.logo +" " +cx({[classes.whiteAfter]: bgColor === "white" });
     var brand = (
       <div className={logoClasses}>
         <a
@@ -472,7 +410,7 @@ class Sidebar extends React.Component {
           target="_blank"
           className={logoMini}
         >
-          <img src={logo} alt="logo" className={classes.img} />
+          <img src={localStorage.getItem("org") === 'PowerMobility' ? logoPM : logoZ} alt="logo" className={classes.img} />
         </a>
         <a
           href="https://www.creative-tim.com?ref=mdpr-sidebar"
@@ -483,17 +421,29 @@ class Sidebar extends React.Component {
         </a>
       </div>
     );
-    const drawerPaper =
-      classes.drawerPaper +
-      " " +
+      // var user = (
+      //     <div className={classes.avatar}>
+      //         <a
+      //             href="/admin/user"
+      //             className={classes.avatarLink}
+      //         >
+      //             <div style={{ display: "flex" }}>
+      //                 {/*{(localStorage.getItem("user").slice(0, 2))}*/}
+      //                 <Avatar alt = "Daniel" src={avatarImg}/>
+      //                 <div style={{ marginTop: "5px", marginLeft: "15px" }}>
+      //                     {logoText}
+      //                 </div>
+      //             </div>
+      //         </a>
+      //     </div>
+      // );
+    const drawerPaper = classes.drawerPaper + " " +
       cx({
         [classes.drawerPaperMini]:
           this.props.miniActive && this.state.miniActive,
         [classes.drawerPaperRTL]: rtlActive
       });
-    const sidebarWrapper =
-      classes.sidebarWrapper +
-      " " +
+    const sidebarWrapper = classes.sidebarWrapper + " " +
       cx({
         [classes.drawerPaperMini]:
           this.props.miniActive && this.state.miniActive,
