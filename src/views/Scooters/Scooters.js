@@ -18,13 +18,16 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
+import ScooterImg from "@material-ui/icons/TwoWheeler";
+import configData from "../../config.json";
 
 const useStyles = makeStyles(styles);
 
-function StationsTab(inputData) {
+function ScootersTable(inputData) {
 
     const classes = useStyles();
-    const stations = inputData.inputDataSt;
+    const data = inputData.inputDataSl;
+    const scooter = inputData.inputDataScooter;
 
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
@@ -47,11 +50,9 @@ function StationsTab(inputData) {
     const handleFilter = event => {
         switch (event) {
             case 'All': setFilter(1);break;
-            case 'Occupied': setFilter(2);break;
-            case 'Available': setFilter(3);break;
-            case 'Unavailable': setFilter(4);break;
-            case 'Online': setFilter(5);break;
-            case 'Offline': setFilter(6);break;
+            case 'Charging': setFilter(2);break;
+            case 'Charged': setFilter(3);break;
+            case 'Not charging': setFilter(4);break;
         }
     };
 
@@ -67,43 +68,35 @@ function StationsTab(inputData) {
         );
     });
 
-    stations.forEach(station => {
-        station.FilteredData = [];
-        station.outData.forEach(slot => {
+    scooter.forEach(scooter => {
+        scooter.FilteredData = [];
+        scooter.outData.forEach(slot => {
             let arrInner = [];
             arrInner = slot.slice();
             arrInner.push(fillButtons);
             switch(selectedFilter) {
-                case 1: station.FilteredData.push(arrInner); break;
+                case 1: scooter.FilteredData.push(arrInner); break;
                 case 2: {slot.forEach(item => {
-                            if(item === "Occupied") station.FilteredData.push(arrInner)
+                            if(item === "Charging") scooter.FilteredData.push(arrInner)
                         })
                 } break;
                 case 3: {slot.forEach(item => {
-                            if(item === "Available") station.FilteredData.push(arrInner)
+                            if(item === "Charged") scooter.FilteredData.push(arrInner)
                         })
                 } break;
                 case 4: {slot.forEach(item => {
-                            if(item === "Unavailable") station.FilteredData.push(arrInner)
+                            if(item === "Not Charging") scooter.FilteredData.push(arrInner)
                         })
                 } break;
-                case 5: {slot.forEach(item => {
-                            if(item === "Online") station.FilteredData.push(arrInner)
-                        })
-                } break;
-                case 6: {slot.forEach(item => {
-                            if(item === "Offline") station.FilteredData.push(arrInner)
-                        })
-                } break;
-                }
-            })
+            }
+        })
     })
 
     const setStationData = () => {
         let countSlots = 0;
         let availableSlot = 0;
         let occupiedSlot = 0;
-        stations.forEach((item, i) => {
+        scooter.forEach((item, i) => {
             item.n = ++i;
             item.st_counts_slot = item.id_slots.length;
             item.st_status = "online";
@@ -200,7 +193,7 @@ function StationsTab(inputData) {
                                         </Select>
                                     </FormControl>
                                 </GridItem>
-                                <GridItem xs={12} sm={4} md={4} lg={4}>
+                                <GridItem xs={12} sm={6} md={4} lg={4}>
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <InputLabel  htmlFor="simple-select" className={classes.selectLabel}>
                                             Choose City
@@ -240,7 +233,6 @@ function StationsTab(inputData) {
                                                 Tel Aviv
                                             </MenuItem>
                                         </Select>
-
                                     </FormControl>
 
                                 </GridItem>
@@ -248,7 +240,7 @@ function StationsTab(inputData) {
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <CustomDropdown
                                             hoverColor="info"
-                                            buttonText="Select filter Pad"
+                                            buttonText="Filter"
                                             buttonProps={{
                                                 round: true,
                                                 fullWidth: true,
@@ -260,12 +252,9 @@ function StationsTab(inputData) {
                                             dropdownList={[
                                                 "All",
                                                 { divider: true },
-                                                "Occupied",
-                                                "Available",
-                                                "Unavailable",
-                                                { divider: true },
-                                                "Online",
-                                                "Offline"
+                                                "Charging",
+                                                "Charged",
+                                                "Not charging"
                                             ]}
                                         />
                                     </FormControl>
@@ -275,35 +264,36 @@ function StationsTab(inputData) {
                         <div style={{ marginLeft: "15px", marginTop: "20px"}}>
                             <hr/>
                             <h7 className={classes.selectInfoPanel}>
-                            Station qty: {countStation}&nbsp;
-                            Pad qty: {countSlots}&nbsp;
-                            Available pads: {availableSlot}&nbsp;
-                            Occupied pads: {occupiedSlot}&nbsp;
-                            Out of work: {unavailableSlot}&nbsp;
+                            Scooters qty: {countStation}&nbsp;
+                            Granted: {countSlots}&nbsp;
+                            Denied:  {availableSlot}&nbsp;
+                            Charging: {occupiedSlot}&nbsp;
+                            Not charging: {unavailableSlot}&nbsp;
                             </h7>
                         </div>
                     </CardBody>
                 </Card>
             </GridItem>
             <GridItem xs={12}>
-                {stations.map(item => {
+                {scooter.map(item => {
                     return(
                     <Card>
                         <CardHeader color="rose" icon>
                             <CardIcon color="rose">
-                                <EvStationIcon/>
+                                <ScooterImg/>
                             </CardIcon>
-                            <h4 className={classes.cardIconTitle}>Location: Israel, Tel Aviv</h4>
+                            {/*<h4 className={classes.cardIconTitle}>Scooters</h4>*/}
                         </CardHeader>
                         <CardBody>
                             <Table
                                 tableHead={[
                                     "#",
-                                    "Pad ID",
-                                    "Status",
-                                    "Info",
+                                    "ID",
+                                    "Type",
                                     "Charge level, W",
-                                    "Actions"
+                                    "Status",
+                                    "Permission",
+                                    "Station location"
                                 ]}
                                 tableData={item.FilteredData}
                                 customCellClasses={[classes.center, classes.center, classes.right]}
@@ -324,7 +314,7 @@ function StationsTab(inputData) {
     );
 }
 
-export default class Station extends React.Component {
+export default class Scooter extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -351,12 +341,12 @@ export default class Station extends React.Component {
         this.isActive = true;
         this.tmpArr = [];
 
-        this.GetStationData = this.GetStationData.bind(this);
+        this.getScooterData = this.getScooterData.bind(this);
 
     }
 
-    GetStationData() {
-        fetch('http://localhost:5000/api/station/all')
+    getScooterData() {
+        fetch(configData.SERVER_URL+'scooter/all')
             .then(response => {
                 if (!response.ok) {
                     console.log('error');
@@ -364,64 +354,55 @@ export default class Station extends React.Component {
                 return response.json();
             })
             .then((data) => {
-                if(data.length > 0) {
-                    this.setStationData(data)
-                    console.log('GetStationData');
-                }
+                this.setScooterData(data);
             })
-            .then( setTimeout(this.GetStationData, 1000))
+            .then( setTimeout(this.getScooterData, 1000))
     }
 
-    setStationData(data) {
-        let countSlots = 0;
-        let availableSlot = 0;
-        let occupiedSlot = 0;
+    setScooterData(data) {
+        let chargingQty = 0;
+        let notChargingQty = 0;
+        let grantedQty = 0;
+        let deniedQty = 0;
+        let scootersQty = 0;
         data.forEach((item, i) => {
-            item.outData = [];
-            item.n = ++i;
-            item.st_counts_slot = item.id_slots.length;
-            item.st_status = "online";
-            countSlots = countSlots + item.id_slots.length;
-            this.setState({ stationQty: i});
-            item.arr_slots.forEach((sl, i) => {
-                sl._id= i;
-                if(sl.slot_status === 0) {
-                    availableSlot++;
-                    sl.slot_status = 'Available';
-                }
-                if(sl.slot_status === 1) {
-                    occupiedSlot++;
-                    sl.slot_status = 'Occupied';
-                }
-                if(sl.slot_info === 0) {
-                    sl.slot_info = 'Offline';
-                }
-                if(sl.slot_info === 1) {
-                    sl.slot_info = 'Online';
-                }
-                delete sl.scooter_id;
-                delete sl.scooter_event;
-                item.outData.push(Object.values(sl));
-            });
-
+            item.id = i;
+            scootersQty++;
+            if(item.sc_status === 1) {
+                chargingQty++;
+                item.sc_status = 'Charging';
+            }
+            if(item.sc_status === 0 || item.sc_status === 3){
+                notChargingQty++;
+                item.sc_status = 'Not charging';
+            }
+            if(item.sc_perm === 1) {
+                grantedQty++;
+                item.sc_perm = 'Granted';
+            }
+            if(item.sc_perm === 0) {
+                deniedQty++;
+                item.sc_perm = 'Denied';
+            }
         })
-
-        this.setState({ outData: data[0].outData});
-        this.setState({ rows: data});
-        this.setState({ f_rows: data});
-        this.setState({ slotQty: countSlots});
-        this.setState({ availableQty: availableSlot});
-        this.setState({ occupiedQty: occupiedSlot});
+        this.setState({ rows: data})
+        // this.setState({ f_rows: data});
+        // this.setState({ scootersQty: scootersQty});
+        // this.setState({ chargingQty: chargingQty});
+        // this.setState({ notChargingQty: notChargingQty});
+        // this.setState({ grantedQty: grantedQty});
+        // this.setState({ deniedQty: deniedQty});
+        // this.filterScooter();
     }
 
     componentDidMount() {
-        this.GetStationData();
+        this.getScooterData();
     }
 
     render() {
         return (
             <div>
-                <StationsTab inputDataSt={this.state.rows}/>
+                <ScootersTable inputDataScooter={this.state.outData} inputDataSt={this.state.rows}/>
             </div>
         )
     }

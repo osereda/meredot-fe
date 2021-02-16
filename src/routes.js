@@ -45,6 +45,7 @@ import MessageIcon from '@material-ui/icons/Message';
 import EuroIcon from '@material-ui/icons/Euro';
 
 import Stations from 'views/Stations/Stations';
+import Scooters from 'views/Scooters/Scooters';
 
 var dashRoutes = [
   {
@@ -56,17 +57,17 @@ var dashRoutes = [
   },
   {
     path: "/st",
-    name: "Station",
+    name: "Stations",
     icon: EvStationIcon,
     component: Stations,
     layout: "/admin"
   },
   {
     path: "/sc",
-    name: "Scooter",
+    name: "Scooters",
     mini: "Sc",
     icon: TwoWheelerIcon,
-    component: Stations,
+    component: Scooters,
     layout: "/admin"
   },
   {

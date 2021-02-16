@@ -49,7 +49,7 @@ import Scooter from "@material-ui/icons/TwoWheeler";
 import Euro from '@material-ui/icons/Euro';
 
 import Map from "components/Map/Map";
-import configData from "../../config.json"
+import configData from "../../config.json";
 
 const useStyles = makeStyles(styles);
 
