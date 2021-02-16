@@ -18,6 +18,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
+import configData from "../../config.json";
 
 const useStyles = makeStyles(styles);
 
@@ -98,43 +99,6 @@ function StationsTab(inputData) {
                 }
             })
     })
-
-    const setStationData = () => {
-        let countSlots = 0;
-        let availableSlot = 0;
-        let occupiedSlot = 0;
-        stations.forEach((item, i) => {
-            item.n = ++i;
-            item.st_counts_slot = item.id_slots.length;
-            item.st_status = "online";
-            countSlots = countSlots + item.id_slots.length;
-            this.setState({ stationQty: i});
-            item.arr_slots.forEach((sl, i) => {
-                sl.id = i;
-                if(sl.slot_status === 0) {
-                    availableSlot++;
-                    sl.slot_status = 'Available';
-                }
-                if(sl.slot_status === 1) {
-                    occupiedSlot++;
-                    sl.slot_status = 'Occupied';
-                }
-                if(sl.slot_info === 0) {
-                    sl.slot_info = 'Offline';
-                }
-                if(sl.slot_info === 1) {
-                    sl.slot_info = 'Online';
-                }
-            });
-        })
-
-        this.setState({ slotQty: countSlots});
-        this.setState({ availableQty: availableSlot});
-        this.setState({ occupiedQty: occupiedSlot});
-
-    }
-
-
 
     return (
         <GridContainer>
@@ -356,7 +320,7 @@ export default class Station extends React.Component {
     }
 
     GetStationData() {
-        fetch('http://localhost:5000/api/station/all')
+        fetch(configData.SERVER_URL+'station/all')
             .then(response => {
                 if (!response.ok) {
                     console.log('error');

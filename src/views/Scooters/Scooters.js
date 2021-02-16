@@ -26,8 +26,9 @@ const useStyles = makeStyles(styles);
 function ScootersTable(inputData) {
 
     const classes = useStyles();
-    const data = inputData.inputDataSl;
     const scooter = inputData.inputDataScooter;
+
+    // const tableHead=["#", "ID","Type", "Charge level, W", "Status",  "Permission", "Station location"]
 
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
@@ -68,66 +69,27 @@ function ScootersTable(inputData) {
         );
     });
 
-    scooter.forEach(scooter => {
-        scooter.FilteredData = [];
-        scooter.outData.forEach(slot => {
-            let arrInner = [];
-            arrInner = slot.slice();
-            arrInner.push(fillButtons);
-            switch(selectedFilter) {
-                case 1: scooter.FilteredData.push(arrInner); break;
-                case 2: {slot.forEach(item => {
-                            if(item === "Charging") scooter.FilteredData.push(arrInner)
-                        })
-                } break;
-                case 3: {slot.forEach(item => {
-                            if(item === "Charged") scooter.FilteredData.push(arrInner)
-                        })
-                } break;
-                case 4: {slot.forEach(item => {
-                            if(item === "Not Charging") scooter.FilteredData.push(arrInner)
-                        })
-                } break;
-            }
-        })
-    })
-
-    const setStationData = () => {
-        let countSlots = 0;
-        let availableSlot = 0;
-        let occupiedSlot = 0;
-        scooter.forEach((item, i) => {
-            item.n = ++i;
-            item.st_counts_slot = item.id_slots.length;
-            item.st_status = "online";
-            countSlots = countSlots + item.id_slots.length;
-            this.setState({ stationQty: i});
-            item.arr_slots.forEach((sl, i) => {
-                sl.id = i;
-                if(sl.slot_status === 0) {
-                    availableSlot++;
-                    sl.slot_status = 'Available';
-                }
-                if(sl.slot_status === 1) {
-                    occupiedSlot++;
-                    sl.slot_status = 'Occupied';
-                }
-                if(sl.slot_info === 0) {
-                    sl.slot_info = 'Offline';
-                }
-                if(sl.slot_info === 1) {
-                    sl.slot_info = 'Online';
-                }
-            });
-        })
-
-        this.setState({ slotQty: countSlots});
-        this.setState({ availableQty: availableSlot});
-        this.setState({ occupiedQty: occupiedSlot});
-
-    }
-
-
+    // scooter.forEach(scooter => {
+    //     scooter.FilteredData = [];
+    //     let arrInner = [];
+    //     arrInner = slot.slice();
+    //     arrInner.push(fillButtons);
+    //     switch(selectedFilter) {
+    //         case 1: scooter.FilteredData.push(arrInner); break;
+    //         case 2: {slot.forEach(item => {
+    //                     if(item === "Charging") scooter.FilteredData.push(arrInner)
+    //                 })
+    //         } break;
+    //         case 3: {slot.forEach(item => {
+    //                     if(item === "Charged") scooter.FilteredData.push(arrInner)
+    //                 })
+    //         } break;
+    //         case 4: {slot.forEach(item => {
+    //                     if(item === "Not Charging") scooter.FilteredData.push(arrInner)
+    //                 })
+    //         } break;
+    //     }
+    // })
 
     return (
         <GridContainer>
@@ -275,40 +237,36 @@ function ScootersTable(inputData) {
                 </Card>
             </GridItem>
             <GridItem xs={12}>
-                {scooter.map(item => {
-                    return(
-                    <Card>
-                        <CardHeader color="rose" icon>
-                            <CardIcon color="rose">
-                                <ScooterImg/>
-                            </CardIcon>
-                            {/*<h4 className={classes.cardIconTitle}>Scooters</h4>*/}
-                        </CardHeader>
-                        <CardBody>
-                            <Table
-                                tableHead={[
-                                    "#",
-                                    "ID",
-                                    "Type",
-                                    "Charge level, W",
-                                    "Status",
-                                    "Permission",
-                                    "Station location"
-                                ]}
-                                tableData={item.FilteredData}
-                                customCellClasses={[classes.center, classes.center, classes.right]}
-                                customClassesForCells={[0, 4, 5]}
-                                customHeadCellClasses={[
-                                    classes.center,
-                                    classes.center,
-                                    classes.right
-                                ]}
-                                customHeadClassesForCells={[0, 4, 5]}
-                            />
-                        </CardBody>
-                    </Card>
-                    )}
-                    )}
+                <Card>
+                    <CardHeader color="rose" icon>
+                        <CardIcon color="rose">
+                            <ScooterImg/>
+                        </CardIcon>
+                        {/*<h4 className={classes.cardIconTitle}>Scooters</h4>*/}
+                    </CardHeader>
+                    <CardBody>
+                        <Table
+                            tableHead={[
+                                "#",
+                                "ID",
+                                "Type",
+                                "Charge level, W",
+                                "Status",
+                                "Permission",
+                                "Station location"
+                            ]}
+                             tableData={[]}
+                            customCellClasses={[classes.center, classes.center, classes.right]}
+                            customClassesForCells={[0, 4, 5]}
+                            customHeadCellClasses={[
+                                classes.center,
+                                classes.center,
+                                classes.right
+                            ]}
+                            customHeadClassesForCells={[0, 4, 5]}
+                        />
+                    </CardBody>
+                </Card>
             </GridItem>
         </GridContainer>
     );
@@ -354,7 +312,8 @@ export default class Scooter extends React.Component {
                 return response.json();
             })
             .then((data) => {
-                this.setScooterData(data);
+                // this.setScooterData(data);
+                this.setState({ rows: data})
             })
             .then( setTimeout(this.getScooterData, 1000))
     }
@@ -402,7 +361,7 @@ export default class Scooter extends React.Component {
     render() {
         return (
             <div>
-                <ScootersTable inputDataScooter={this.state.outData} inputDataSt={this.state.rows}/>
+                <ScootersTable inputDataScooter={this.state.rows}/>
             </div>
         )
     }
