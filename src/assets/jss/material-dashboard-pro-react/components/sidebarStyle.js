@@ -125,13 +125,18 @@ const sidebarStyle = theme => ({
     opacity: 1,
     float: "left",
     textAlign: "center",
-    width: "30px",
+    width: "130px",
+    height: "50px",
     display: "inline-block",
     maxHeight: "30px",
     marginLeft: "22px",
     marginRight: "18px",
     marginTop: "7px",
     color: "inherit"
+  },
+  imgLogo: {
+    width: "200px",
+    height: "35px",
   },
   logoMiniRTL: {
     float: "right",

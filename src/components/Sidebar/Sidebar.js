@@ -332,7 +332,7 @@ class Sidebar extends React.Component {
               <List className={classes.list + " " + classes.collapseList}>
                 <ListItem className={classes.collapseItem}>
                   <NavLink
-                    to="#"
+                    to="/admin/user-page"
                     className={
                       classes.itemLink + " " + classes.userCollapseLinks
                     }
@@ -403,15 +403,21 @@ class Sidebar extends React.Component {
       });
     const logoMini = classes.logoMini +" " +cx({[classes.logoMiniRTL]: rtlActive });
     const logoClasses = classes.logo +" " +cx({[classes.whiteAfter]: bgColor === "white" });
+    const imgPM = <img src={logoPM} alt="logo" className={classes.imgLogo} />
+    const imgZ = <img src={logoZ} alt="logo" className={classes.imgLogo} />
+
     var brand = (
       <div className={logoClasses}>
-        <a
-          href="https://www.creative-tim.com?ref=mdpr-sidebar"
-          target="_blank"
-          className={logoMini}
-        >
-          <img src={localStorage.getItem("org") === 'PowerMobility' ? logoPM : logoZ} alt="logo" className={classes.img} />
-        </a>
+        {/*<a*/}
+        {/*  href="https://www.creative-tim.com?ref=mdpr-sidebar"*/}
+        {/*  target="_blank"*/}
+        {/*  className={logoMini}*/}
+        {/*>*/}
+        <div className={logoMini}>
+          {localStorage.getItem("org") === 'PowerMobility' ? imgPM : null}
+          {localStorage.getItem("org") === 'ZMove' ? imgZ : null}
+        </div>
+        {/*</a>*/}
         <a
           href="https://www.creative-tim.com?ref=mdpr-sidebar"
           target="_blank"
