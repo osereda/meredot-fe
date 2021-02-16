@@ -26,20 +26,15 @@ const useStyles = makeStyles(styles);
 function ScootersTable(inputData) {
 
     const classes = useStyles();
-    const scooter = inputData.inputDataScooter;
-
+    const scooters = inputData.inputDataScooter;
+    const scootersQty = inputData.inputDataScooterQty;
     // const tableHead=["#", "ID","Type", "Charge level, W", "Status",  "Permission", "Station location"]
-
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
-    const [countStation, setCountStation] = React.useState(1);
-    const [countSlots, setCountSlots] = React.useState(1);
-    const [availableSlot, setAvailableSlot] = React.useState(1);
-    const [occupiedSlot, setOccupiedSlot] = React.useState(1);
-    const [unavailableSlot, setUnavailableSlot] = React.useState(1);
-    const [onlineSlot, setOnlineSlot] = React.useState(1);
-    const [offlineSlot, setOfflineSlot] = React.useState(1);
+    const [selectedFilterStat, setFilterSat] = React.useState('All');
+    let  FilteredData = [];
+
     const handleCountry = event => {
         setSelectCountry(event.target.value);
     };
@@ -50,10 +45,10 @@ function ScootersTable(inputData) {
 
     const handleFilter = event => {
         switch (event) {
-            case 'All': setFilter(1);break;
-            case 'Charging': setFilter(2);break;
-            case 'Charged': setFilter(3);break;
-            case 'Not charging': setFilter(4);break;
+            case 'All': setFilter(1);setFilterSat('All');break;
+            case 'Charging': setFilter(2); setFilterSat('Charging');break;
+            case 'Charged': setFilter(3); setFilterSat('Charged');break;
+            case 'Not charging': setFilter(4);setFilterSat('Not charging');break;
         }
     };
 
@@ -69,27 +64,27 @@ function ScootersTable(inputData) {
         );
     });
 
-    // scooter.forEach(scooter => {
-    //     scooter.FilteredData = [];
-    //     let arrInner = [];
-    //     arrInner = slot.slice();
-    //     arrInner.push(fillButtons);
-    //     switch(selectedFilter) {
-    //         case 1: scooter.FilteredData.push(arrInner); break;
-    //         case 2: {slot.forEach(item => {
-    //                     if(item === "Charging") scooter.FilteredData.push(arrInner)
-    //                 })
-    //         } break;
-    //         case 3: {slot.forEach(item => {
-    //                     if(item === "Charged") scooter.FilteredData.push(arrInner)
-    //                 })
-    //         } break;
-    //         case 4: {slot.forEach(item => {
-    //                     if(item === "Not Charging") scooter.FilteredData.push(arrInner)
-    //                 })
-    //         } break;
-    //     }
-    // })
+    scooters.forEach(scooter => {
+        let arrInner = [];
+        arrInner = scooter.slice();
+        arrInner.push(fillButtons);
+        switch(selectedFilter) {
+            case 1: FilteredData.push(arrInner); break;
+            case 2: {scooter.forEach(item => {
+                        if(item === "Charging") FilteredData.push(arrInner)
+                    })
+            } break;
+            case 3: {scooter.forEach(item => {
+                        if(item === "Charged") FilteredData.push(arrInner)
+                    })
+            } break;
+            case 4: {scooter.forEach(item => {
+                        if(item === "Not charging") FilteredData.push(arrInner)
+                    })
+            } break;
+        }
+    })
+    FilteredData = FilteredData.slice();
 
     return (
         <GridContainer>
@@ -202,7 +197,7 @@ function ScootersTable(inputData) {
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <CustomDropdown
                                             hoverColor="info"
-                                            buttonText="Filter"
+                                            buttonText={selectedFilterStat}
                                             buttonProps={{
                                                 round: true,
                                                 fullWidth: true,
@@ -226,11 +221,11 @@ function ScootersTable(inputData) {
                         <div style={{ marginLeft: "15px", marginTop: "20px"}}>
                             <hr/>
                             <h7 className={classes.selectInfoPanel}>
-                            Scooters qty: {countStation}&nbsp;
-                            Granted: {countSlots}&nbsp;
-                            Denied:  {availableSlot}&nbsp;
-                            Charging: {occupiedSlot}&nbsp;
-                            Not charging: {unavailableSlot}&nbsp;
+                            Scooters qty: {scootersQty[0]}&nbsp;
+                            Granted: {scootersQty[2]}&nbsp;
+                            Denied:  {scootersQty[0] -scootersQty[2]}&nbsp;
+                            Charging: {scootersQty[1]}&nbsp;
+                            Not charging: {scootersQty[0] - scootersQty[1]}&nbsp;
                             </h7>
                         </div>
                     </CardBody>
@@ -255,7 +250,7 @@ function ScootersTable(inputData) {
                                 "Permission",
                                 "Station location"
                             ]}
-                             tableData={[]}
+                             tableData={FilteredData}
                             customCellClasses={[classes.center, classes.center, classes.right]}
                             customClassesForCells={[0, 4, 5]}
                             customHeadCellClasses={[
@@ -276,28 +271,9 @@ export default class Scooter extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: 0,
             rows:[],
-            f_rows:[],
-            stationQty: 0,
-            slotQty : 0,
-            availableQty : 0,
-            occupiedQty : 0,
-            outOfWork : 0,
-
-            isAll: true,
-            isAvailable: false,
-            isOccupied: false,
-            isUnavailable: false,
-            isOnline: false,
-            isOffline: false,
-
-            outData: []
-
+            rowsQty:[],
         };
-
-        this.isActive = true;
-        this.tmpArr = [];
 
         this.getScooterData = this.getScooterData.bind(this);
 
@@ -312,8 +288,8 @@ export default class Scooter extends React.Component {
                 return response.json();
             })
             .then((data) => {
-                // this.setScooterData(data);
-                this.setState({ rows: data})
+                this.setScooterData(data);
+                // this.setState({ rows: data})
             })
             .then( setTimeout(this.getScooterData, 1000))
     }
@@ -324,8 +300,10 @@ export default class Scooter extends React.Component {
         let grantedQty = 0;
         let deniedQty = 0;
         let scootersQty = 0;
+        let outData = [];
+        let outDataQty = [];
         data.forEach((item, i) => {
-            item.id = i;
+            item._id = ++i;
             scootersQty++;
             if(item.sc_status === 1) {
                 chargingQty++;
@@ -343,15 +321,12 @@ export default class Scooter extends React.Component {
                 deniedQty++;
                 item.sc_perm = 'Denied';
             }
+            delete item.sc_operator;
+            outData.push(Object.values(item));
         })
-        this.setState({ rows: data})
-        // this.setState({ f_rows: data});
-        // this.setState({ scootersQty: scootersQty});
-        // this.setState({ chargingQty: chargingQty});
-        // this.setState({ notChargingQty: notChargingQty});
-        // this.setState({ grantedQty: grantedQty});
-        // this.setState({ deniedQty: deniedQty});
-        // this.filterScooter();
+        outDataQty.push(scootersQty, chargingQty, grantedQty);
+        this.setState({ rows: outData})
+        this.setState({ rowsQty: outDataQty})
     }
 
     componentDidMount() {
@@ -361,7 +336,9 @@ export default class Scooter extends React.Component {
     render() {
         return (
             <div>
-                <ScootersTable inputDataScooter={this.state.rows}/>
+                <ScootersTable
+                    inputDataScooter={this.state.rows}
+                    inputDataScooterQty ={this.state.rowsQty}/>
             </div>
         )
     }
