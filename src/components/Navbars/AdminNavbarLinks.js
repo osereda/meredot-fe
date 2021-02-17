@@ -25,6 +25,8 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-pro-react/components/adminNavbarLinksStyle.js";
+import ListItemText from "@material-ui/core/ListItemText";
+import {NavLink} from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
@@ -51,6 +53,17 @@ export default function HeaderLinks(props) {
   const handleCloseProfile = () => {
     setOpenProfile(null);
   };
+    const handleCloseProfileLogOut = () => {
+        localStorage.removeItem("isAuth");
+        localStorage.removeItem("user");
+        localStorage.removeItem("org");
+        document.location.href="/login";
+        setOpenProfile(null);
+    };
+    const handleCloseProfileGoToProfile = () => {
+        document.location.href="/admin/user-page";
+        setOpenProfile(null);
+    };
   const classes = useStyles();
   const { rtlActive } = props;
   const searchButton =
@@ -264,23 +277,24 @@ export default function HeaderLinks(props) {
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role="menu">
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleCloseProfileGoToProfile}
                       className={dropdownItem}
                     >
-                      {rtlActive ? "الملف الشخصي" : "Profile"}
+                      Profile
                     </MenuItem>
                     <MenuItem
+                      disabled
                       onClick={handleCloseProfile}
                       className={dropdownItem}
                     >
-                      {rtlActive ? "الإعدادات" : "Settings"}
+                     Settings
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleCloseProfileLogOut}
                       className={dropdownItem}
                     >
-                      {rtlActive ? "الخروج" : "Log out"}
+                        Log out
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>

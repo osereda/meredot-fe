@@ -249,11 +249,7 @@ function StationsTab(inputData) {
                                 tableData={item.FilteredData}
                                 customCellClasses={[classes.center, classes.center, classes.right]}
                                 customClassesForCells={[0, 4, 5]}
-                                customHeadCellClasses={[
-                                    classes.center,
-                                    classes.center,
-                                    classes.right
-                                ]}
+                                customHeadCellClasses={[ classes.center, classes.center, classes.right]}
                                 customHeadClassesForCells={[0, 4, 5]}
                             />
                         </CardBody>
