@@ -91,10 +91,10 @@ function ScootersTable(inputData) {
             <GridItem xs={12}>
                 <Card>
                     <CardBody>
-                        <GridItem xs={12} sm={10} md={8}>
+                        <GridItem xs={12} sm={12} md={10}>
                             {/*<legend>Customisable Select</legend>*/}
                             <GridContainer>
-                                <GridItem xs={12} sm={4} md={4} lg={4}>
+                                <GridItem xs={8} sm={4} md={4} lg={4}>
                                     <FormControl
                                         fullWidth
                                         className={classes.selectFormControl}
@@ -150,7 +150,7 @@ function ScootersTable(inputData) {
                                         </Select>
                                     </FormControl>
                                 </GridItem>
-                                <GridItem xs={12} sm={6} md={4} lg={4}>
+                                <GridItem xs={8} sm={4} md={4} lg={4}>
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <InputLabel  htmlFor="simple-select" className={classes.selectLabel}>
                                             Choose City
@@ -193,7 +193,7 @@ function ScootersTable(inputData) {
                                     </FormControl>
 
                                 </GridItem>
-                                <GridItem xs={12} sm={4} md={4} lg={4} alignItems="flex-end">
+                                <GridItem xs={8} sm={4} md={4} lg={4} alignItems="flex-end">
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <CustomDropdown
                                             hoverColor="info"
@@ -248,17 +248,14 @@ function ScootersTable(inputData) {
                                 "Charge level, W",
                                 "Status",
                                 "Permission",
-                                "Station location"
+                                "Station location",
+                                "Action"
                             ]}
                              tableData={FilteredData}
-                            customCellClasses={[classes.center, classes.center, classes.right]}
-                            customClassesForCells={[0, 4, 5]}
-                            customHeadCellClasses={[
-                                classes.center,
-                                classes.center,
-                                classes.right
-                            ]}
-                            customHeadClassesForCells={[0, 4, 5]}
+                            customCellClasses={[classes.center, classes.right]}
+                            customClassesForCells={[6, 7]}
+                            customHeadCellClasses={[ classes.center, classes.right]}
+                            customHeadClassesForCells={[6, 7]}
                         />
                     </CardBody>
                 </Card>
