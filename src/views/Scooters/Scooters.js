@@ -28,7 +28,7 @@ function ScootersTable(inputData) {
     const classes = useStyles();
     const scooters = inputData.inputDataScooter;
     const scootersQty = inputData.inputDataScooterQty;
-    // const tableHead=["#", "ID","Type", "Charge level, W", "Status",  "Permission", "Station location"]
+    const tableHeadData=["#", "ID","Type", "Charge level, W", "Status",  "Permission", "Station location", "Actions"]
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
@@ -241,17 +241,8 @@ function ScootersTable(inputData) {
                     </CardHeader>
                     <CardBody>
                         <Table
-                            tableHead={[
-                                "#",
-                                "ID",
-                                "Type",
-                                "Charge level, W",
-                                "Status",
-                                "Permission",
-                                "Station location",
-                                "Action"
-                            ]}
-                             tableData={FilteredData}
+                            tableHead = {tableHeadData}
+                            tableData={FilteredData}
                             customCellClasses={[classes.center, classes.right]}
                             customClassesForCells={[6, 7]}
                             customHeadCellClasses={[ classes.center, classes.right]}

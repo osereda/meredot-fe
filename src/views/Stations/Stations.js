@@ -32,6 +32,7 @@ function StationsTab(inputData) {
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
     const [selectedFilterLabel, setFilterLabel] = React.useState("All");
+    const tableHeadData = ["#", "Pad ID", "Status", "Info",  "Charge level, W", "Actions"]
 
     const handleCountry = event => {
         setSelectCountry(event.target.value);
@@ -244,14 +245,7 @@ function StationsTab(inputData) {
                         </CardHeader>
                         <CardBody>
                             <Table
-                                tableHead={[
-                                    "#",
-                                    "Pad ID",
-                                    "Status",
-                                    "Info",
-                                    "Charge level, W",
-                                    "Actions"
-                                ]}
+                                tableHead={tableHeadData}
                                 tableData={item.FilteredData}
                                 customCellClasses={[classes.center, classes.center, classes.right]}
                                 customClassesForCells={[0, 4, 5]}
