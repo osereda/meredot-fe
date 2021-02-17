@@ -25,19 +25,14 @@ const useStyles = makeStyles(styles);
 function StationsTab(inputData) {
 
     const classes = useStyles();
-    const stations = inputData.inputDataSt;
+    const stations = inputData.dataStation;
     const stationQty = inputData.dataQtyStation;
 
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
-    const [countStation, setCountStation] = React.useState(1);
-    const [countSlots, setCountSlots] = React.useState(1);
-    const [availableSlot, setAvailableSlot] = React.useState(1);
-    const [occupiedSlot, setOccupiedSlot] = React.useState(1);
-    const [unavailableSlot, setUnavailableSlot] = React.useState(1);
-    const [onlineSlot, setOnlineSlot] = React.useState(1);
-    const [offlineSlot, setOfflineSlot] = React.useState(1);
+    const [selectedFilterLabel, setFilterLabel] = React.useState("All");
+
     const handleCountry = event => {
         setSelectCountry(event.target.value);
     };
@@ -48,12 +43,12 @@ function StationsTab(inputData) {
 
     const handleFilter = event => {
         switch (event) {
-            case 'All': setFilter(1);break;
-            case 'Occupied': setFilter(2);break;
-            case 'Available': setFilter(3);break;
-            case 'Unavailable': setFilter(4);break;
-            case 'Online': setFilter(5);break;
-            case 'Offline': setFilter(6);break;
+            case 'All': setFilter(1);setFilterLabel("All");break;
+            case 'Occupied': setFilter(2);setFilterLabel("Occupied");break;
+            case 'Available': setFilter(3);setFilterLabel("Available");break;
+            case 'Unavailable': setFilter(4);setFilterLabel("Unavailable");break;
+            case 'Online': setFilter(5);setFilterLabel("Online");break;
+            case 'Offline': setFilter(6);setFilterLabel("Offline");break;
         }
     };
 
@@ -110,10 +105,7 @@ function StationsTab(inputData) {
                             {/*<legend>Customisable Select</legend>*/}
                             <GridContainer>
                                 <GridItem xs={12} sm={4} md={4} lg={4}>
-                                    <FormControl
-                                        fullWidth
-                                        className={classes.selectFormControl}
-                                    >
+                                    <FormControl fullWidth className={classes.selectFormControl}>
                                         <InputLabel
                                             htmlFor="simple-select"
                                             className={classes.selectLabel}
@@ -121,12 +113,8 @@ function StationsTab(inputData) {
                                             Choose Country
                                         </InputLabel>
                                         <Select
-                                            MenuProps={{
-                                                className: classes.selectMenu
-                                            }}
-                                            classes={{
-                                                select: classes.select
-                                            }}
+                                            MenuProps={{className: classes.selectMenu }}
+                                            classes={{ select: classes.select }}
                                             value={selectCountry}
                                             onChange={handleCountry}
                                             inputProps={{
@@ -136,9 +124,7 @@ function StationsTab(inputData) {
                                         >
                                             <MenuItem
                                                 disabled
-                                                classes={{
-                                                    root: classes.selectMenuItem
-                                                }}
+                                                classes={{root: classes.selectMenuItem }}
                                             >
                                                 Choose Country
                                             </MenuItem>
@@ -171,12 +157,8 @@ function StationsTab(inputData) {
                                             Choose City
                                         </InputLabel>
                                         <Select
-                                            MenuProps={{
-                                                className: classes.selectMenu
-                                            }}
-                                            classes={{
-                                                select: classes.select
-                                            }}
+                                            MenuProps={{ className: classes.selectMenu }}
+                                            classes={{ select: classes.select }}
                                             value={selectCity}
                                             onChange={handleCity}
                                             inputProps={{
@@ -213,7 +195,7 @@ function StationsTab(inputData) {
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <CustomDropdown
                                             hoverColor="info"
-                                            buttonText="Select filter Pad"
+                                            buttonText={selectedFilterLabel}
                                             buttonProps={{
                                                 round: true,
                                                 fullWidth: true,
@@ -295,30 +277,9 @@ export default class Station extends React.Component {
         this.state = {
             count: 0,
             rows:[],
-            f_rows:[],
-            stationQty: 0,
-            slotQty : 0,
-            availableQty : 0,
-            occupiedQty : 0,
-            outOfWork : 0,
-
-            isAll: true,
-            isAvailable: false,
-            isOccupied: false,
-            isUnavailable: false,
-            isOnline: false,
-            isOffline: false,
-
-            outData: [],
             outDataQty: []
-
         };
-
-        this.isActive = true;
-        this.tmpArr = [];
-
         this.GetStationData = this.GetStationData.bind(this);
-
     }
 
     GetStationData() {
@@ -348,10 +309,6 @@ export default class Station extends React.Component {
         data.forEach((item, i) => {
             countStation++;
             item.outData = [];
-            item.n = ++i;
-            item.availableSlot = 0;
-            item.occupiedSlot = 0;
-            item.outOfWork = 0;
             item.st_counts_slot = item.id_slots.length;
             item.st_status = "online";
             item.countSlots = item.countSlots + item.id_slots.length;
@@ -381,13 +338,8 @@ export default class Station extends React.Component {
 
         })
         outDataQty.push(countStation, countSlots, availableSlot, occupiedSlot, outOfWork);
-
         this.setState({ outDataQty: outDataQty});
         this.setState({ rows: data});
-        this.setState({ f_rows: data});
-        this.setState({ slotQty: countSlots});
-        this.setState({ availableQty: availableSlot});
-        this.setState({ occupiedQty: occupiedSlot});
     }
 
     componentDidMount() {
@@ -397,7 +349,7 @@ export default class Station extends React.Component {
     render() {
         return (
             <div>
-                <StationsTab inputDataSt={this.state.rows} dataQtyStation={this.state.outDataQty}/>
+                <StationsTab dataStation={this.state.rows} dataQtyStation={this.state.outDataQty}/>
             </div>
         )
     }
