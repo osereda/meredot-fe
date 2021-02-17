@@ -26,6 +26,7 @@ function StationsTab(inputData) {
 
     const classes = useStyles();
     const stations = inputData.inputDataSt;
+    const stationQty = inputData.dataQtyStation;
 
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
@@ -239,11 +240,11 @@ function StationsTab(inputData) {
                         <div style={{ marginLeft: "15px", marginTop: "20px"}}>
                             <hr/>
                             <h7 className={classes.selectInfoPanel}>
-                            Station qty: {countStation}&nbsp;
-                            Pad qty: {countSlots}&nbsp;
-                            Available pads: {availableSlot}&nbsp;
-                            Occupied pads: {occupiedSlot}&nbsp;
-                            Out of work: {unavailableSlot}&nbsp;
+                            Station qty: {stationQty[0]}&nbsp;
+                            Pad qty: {stationQty[1]}&nbsp;
+                            Available pads: {stationQty[2]}&nbsp;
+                            Occupied pads: {stationQty[3]}&nbsp;
+                            Out of work: {stationQty[4]}&nbsp;
                             </h7>
                         </div>
                     </CardBody>
@@ -308,7 +309,8 @@ export default class Station extends React.Component {
             isOnline: false,
             isOffline: false,
 
-            outData: []
+            outData: [],
+            outDataQty: []
 
         };
 
@@ -330,25 +332,33 @@ export default class Station extends React.Component {
             .then((data) => {
                 if(data.length > 0) {
                     this.setStationData(data)
-                    console.log('GetStationData');
                 }
             })
             .then( setTimeout(this.GetStationData, 1000))
     }
 
     setStationData(data) {
+        let countStation = 0;
         let countSlots = 0;
         let availableSlot = 0;
         let occupiedSlot = 0;
+        let outOfWork = 0;
+        let outData = []
+        let outDataQty = []
         data.forEach((item, i) => {
+            countStation++;
             item.outData = [];
             item.n = ++i;
+            item.availableSlot = 0;
+            item.occupiedSlot = 0;
+            item.outOfWork = 0;
             item.st_counts_slot = item.id_slots.length;
             item.st_status = "online";
-            countSlots = countSlots + item.id_slots.length;
+            item.countSlots = item.countSlots + item.id_slots.length;
             this.setState({ stationQty: i});
             item.arr_slots.forEach((sl, i) => {
                 sl._id= i;
+                countSlots++;
                 if(sl.slot_status === 0) {
                     availableSlot++;
                     sl.slot_status = 'Available';
@@ -367,10 +377,12 @@ export default class Station extends React.Component {
                 delete sl.scooter_event;
                 item.outData.push(Object.values(sl));
             });
+            outData.push(item.outData);
 
         })
+        outDataQty.push(countStation, countSlots, availableSlot, occupiedSlot, outOfWork);
 
-        this.setState({ outData: data[0].outData});
+        this.setState({ outDataQty: outDataQty});
         this.setState({ rows: data});
         this.setState({ f_rows: data});
         this.setState({ slotQty: countSlots});
@@ -385,7 +397,7 @@ export default class Station extends React.Component {
     render() {
         return (
             <div>
-                <StationsTab inputDataSt={this.state.rows}/>
+                <StationsTab inputDataSt={this.state.rows} dataQtyStation={this.state.outDataQty}/>
             </div>
         )
     }
