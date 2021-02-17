@@ -102,10 +102,10 @@ function StationsTab(inputData) {
             <GridItem xs={12}>
                 <Card>
                     <CardBody>
-                        <GridItem xs={12} sm={10} md={8}>
+                        <GridItem xs={12} sm={12} md={12}>
                             {/*<legend>Customisable Select</legend>*/}
                             <GridContainer>
-                                <GridItem xs={12} sm={4} md={4} lg={4}>
+                                <GridItem xs={12} sm={4} md={3} lg={2}>
                                     <FormControl fullWidth className={classes.selectFormControl}>
                                         <InputLabel
                                             htmlFor="simple-select"
@@ -152,7 +152,7 @@ function StationsTab(inputData) {
                                         </Select>
                                     </FormControl>
                                 </GridItem>
-                                <GridItem xs={12} sm={4} md={4} lg={4}>
+                                <GridItem xs={12} sm={4} md={3} lg={2}>
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <InputLabel  htmlFor="simple-select" className={classes.selectLabel}>
                                             Choose City
@@ -192,7 +192,7 @@ function StationsTab(inputData) {
                                     </FormControl>
 
                                 </GridItem>
-                                <GridItem xs={12} sm={4} md={4} lg={4} alignItems="flex-end">
+                                <GridItem xs={12} sm={4} md={4} lg={2} alignItems="flex-end">
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <CustomDropdown
                                             hoverColor="info"
@@ -241,7 +241,7 @@ function StationsTab(inputData) {
                             <CardIcon color="rose">
                                 <EvStationIcon/>
                             </CardIcon>
-                            <h4 className={classes.cardIconTitle}>Location: Israel, Tel Aviv</h4>
+                            <h5 className={classes.cardIconTitle}>Location: {item.location}</h5>
                         </CardHeader>
                         <CardBody>
                             <Table
