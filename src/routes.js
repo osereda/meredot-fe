@@ -133,13 +133,13 @@ var dashRoutes = [
     component: UserProfile,
     layout: "/admin"
   },
-  {
-    path: "/login-page",
-    name: "Login Page",
-    mini: "L",
-    component: LoginPage,
-    layout: "/auth"
-  },
+  // {
+  //   path: "/login-page",
+  //   name: "Login Page",
+  //   mini: "L",
+  //   component: LoginPage,
+  //   layout: "/auth"
+  // },
   // {
   //   collapse: true,
   //   name: "Pages",

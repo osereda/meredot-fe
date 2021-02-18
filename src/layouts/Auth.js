@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import Footer from "components/Footer/Footer.js";
 
-import routes from "routes.js";
+// import routes from "routes.js";
 
 import styles from "assets/jss/material-dashboard-pro-react/layouts/authStyle.js";
 
@@ -14,8 +14,17 @@ import login from "assets/img/login.jpeg";
 import lock from "assets/img/lock.jpeg";
 import error from "assets/img/clint-mckoy.jpg";
 import pricing from "assets/img/bg-pricing.jpeg";
+import LoginPage from "../views/Pages/LoginPage";
 
 const useStyles = makeStyles(styles);
+
+const routes = [{
+      path: "/login-page",
+      name: "Login Page",
+      mini: "L",
+      component: LoginPage,
+      layout: "/auth"
+    }]
 
 export default function Pages(props) {
   const { ...rest } = props;
@@ -73,6 +82,7 @@ export default function Pages(props) {
         if (
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
         ) {
+          console.log("routes[i].name" + routes[i].name);
           return routes[i].name;
         }
       }
