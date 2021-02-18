@@ -48,7 +48,7 @@ export default function MapCenterMark(geodata) {
                             <tr style={{borderBottom: "1px solid black"}}>
                                 <td style={{ textAlign: "left" , borderBottom: "1px solid #eee"}}>Address</td>
                                 <td style={{ paddingLeft: "5px" , borderBottom: "1px solid #eee"}}>Available slots</td>
-                                <td style={{ paddingLeft: "5px" , borderBottom: "1px solid #eee"}}>Slots count</td>
+                                <td style={{ paddingLeft: "5px" , borderBottom: "1px solid #eee"}}>Number of slots</td>
                             </tr >
                             <tr>
                                 <td>{geodata.geodata.address}</td>
