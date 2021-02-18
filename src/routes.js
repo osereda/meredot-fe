@@ -46,6 +46,12 @@ import EuroIcon from '@material-ui/icons/Euro';
 
 import Stations from 'views/Stations/Stations';
 import Scooters from 'views/Scooters/Scooters';
+import PowerAndCost from 'views/PowerAndCost/PowerAndCost';
+import StationRating from 'views/StationRating/StationRating';
+import BillingAndHistory from 'views/BillingAndHistory/BillingAndHistory';
+import NewMassage from 'views/NewMassage/NewMassage';
+import IncomingMessage from 'views/IncomingMessage/IncomingMessage';
+import OutgoingMessage from 'views/OutgoingMessage/OutgoingMessage';
 
 var dashRoutes = [
   {
@@ -75,7 +81,7 @@ var dashRoutes = [
     name: "Power and Cost",
     mini: "PAC",
     icon: EuroIcon,
-    component: Panels,
+    component: PowerAndCost,
     layout: "/admin"
   },
   {
@@ -83,7 +89,7 @@ var dashRoutes = [
     name: "Station Rating",
     mini: "SR",
     icon: TrendingUpIcon,
-    component: Panels,
+    component: StationRating,
     layout: "/admin"
   },
   {
@@ -91,7 +97,7 @@ var dashRoutes = [
     name: "Billing & History",
     mini: "BH",
     icon: HistoryIcon,
-    component: Panels,
+    component: BillingAndHistory,
     layout: "/admin"
   },
   {
@@ -99,7 +105,7 @@ var dashRoutes = [
     name: "New Massage",
     mini: "NM",
     icon: MarkunreadIcon,
-    component: Panels,
+    component: NewMassage,
     layout: "/admin"
   },
   {
@@ -107,7 +113,7 @@ var dashRoutes = [
     name: "Incoming Message",
     mini: "IM",
     icon: MessageIcon,
-    component: Panels,
+    component: IncomingMessage,
     layout: "/admin"
   },
   {
@@ -115,7 +121,7 @@ var dashRoutes = [
     name: "Outgoing Message",
     mini: "OM",
     icon: MessageIcon,
-    component: Panels,
+    component: OutgoingMessage,
     layout: "/admin"
   },
   {
