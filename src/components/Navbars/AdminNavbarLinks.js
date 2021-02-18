@@ -61,7 +61,7 @@ export default function HeaderLinks(props) {
         setOpenProfile(null);
     };
     const handleCloseProfileGoToProfile = () => {
-        document.location.href="/admin/user-page";
+        document.location.href="/admin/user";
         setOpenProfile(null);
     };
   const classes = useStyles();

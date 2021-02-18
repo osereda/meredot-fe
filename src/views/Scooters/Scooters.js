@@ -279,7 +279,7 @@ export default class Scooter extends React.Component {
                 this.setScooterData(data);
                 // this.setState({ rows: data})
             })
-            .then( setTimeout(this.getScooterData, 1000))
+            .then( setTimeout(this.getScooterData, 700))
     }
 
     setScooterData(data) {

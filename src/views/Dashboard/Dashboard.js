@@ -341,7 +341,7 @@ export default class Dashboard extends React.Component {
                   this.setStationData(data)
               }
           })
-          .then( setTimeout(this.GetStationData, 1000))
+          .then( setTimeout(this.GetStationData, 800))
   }
 
   getScooterData() {

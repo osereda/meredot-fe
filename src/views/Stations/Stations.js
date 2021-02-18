@@ -285,7 +285,7 @@ export default class Station extends React.Component {
                     this.setStationData(data)
                 }
             })
-            .then( setTimeout(this.GetStationData, 1000))
+            .then( setTimeout(this.GetStationData, 500))
     }
 
     setStationData(data) {
