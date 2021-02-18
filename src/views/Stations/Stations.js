@@ -19,6 +19,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
 import configData from "../../config.json";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(styles);
 
@@ -102,10 +103,13 @@ function StationsTab(inputData) {
             <GridItem xs={12}>
                 <Card>
                     <CardBody>
-                        <GridItem xs={12} sm={12} md={12}>
-                            {/*<legend>Customisable Select</legend>*/}
-                            <GridContainer>
-                                <GridItem xs={12} sm={4} md={3} lg={2}>
+                        <GridContainer justify="space-between">
+                            <GridItem xs={12} sm={12} md={6}
+                                      container
+                                      direction="row"
+                                      justify="flex-start"
+                                      alignItems="flex-start"  >
+                                <GridItem xs={12} sm={7} md={6} lg={5}>
                                     <FormControl fullWidth className={classes.selectFormControl}>
                                         <InputLabel
                                             htmlFor="simple-select"
@@ -152,7 +156,7 @@ function StationsTab(inputData) {
                                         </Select>
                                     </FormControl>
                                 </GridItem>
-                                <GridItem xs={12} sm={4} md={3} lg={2}>
+                                <GridItem xs={12} sm={7} md={6} lg={4} >
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <InputLabel  htmlFor="simple-select" className={classes.selectLabel}>
                                             Choose City
@@ -171,10 +175,10 @@ function StationsTab(inputData) {
                                                 Choose City
                                             </MenuItem>
                                             <MenuItem classes={{
-                                                    root: classes.selectMenuItem,
-                                                    selected: classes.selectMenuItemSelected
-                                                }}
-                                                value="12"
+                                                root: classes.selectMenuItem,
+                                                selected: classes.selectMenuItemSelected
+                                            }}
+                                                      value="12"
                                             >
                                                 All
                                             </MenuItem>
@@ -192,7 +196,9 @@ function StationsTab(inputData) {
                                     </FormControl>
 
                                 </GridItem>
-                                <GridItem xs={12} sm={4} md={4} lg={2} alignItems="flex-end">
+                            </GridItem>
+                            <GridItem xs={12} sm={12} md={3} lg={2}>
+                                <Grid xs={12} sm={12} md={12} lg={12} >
                                     <FormControl  fullWidth   className={classes.selectFormControl}>
                                         <CustomDropdown
                                             hoverColor="info"
@@ -217,9 +223,10 @@ function StationsTab(inputData) {
                                             ]}
                                         />
                                     </FormControl>
-                                </GridItem>
-                            </GridContainer>
-                        </GridItem>
+                                </Grid>
+                            </GridItem>
+                        </GridContainer>
+
                         <div style={{ marginLeft: "15px", marginTop: "20px"}}>
                             <hr/>
                             <h7 className={classes.selectInfoPanel}>
