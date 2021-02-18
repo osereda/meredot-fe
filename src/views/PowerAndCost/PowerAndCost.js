@@ -19,6 +19,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
 import ScooterImg from "@material-ui/icons/TwoWheeler";
 import configData from "../../config.json";
+import {
+    MuiPickersUtilsProvider,
+    KeyboardTimePicker,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
+import 'date-fns';
+
+import EuroIcon from '@material-ui/icons/Euro';
+import DateFnsUtils from '@date-io/date-fns';
+
 
 const useStyles = makeStyles(styles);
 
@@ -27,12 +37,17 @@ function ScootersTable(inputData) {
     const classes = useStyles();
     const scooters = inputData.inputDataScooter;
     const scootersQty = inputData.inputDataScooterQty;
-    const tableHeadData=["#", "ID","Type", "Charge level, W", "Status",  "Permission", "Station location", "Actions"]
+    const tableHeadData=["#", "Date","City", "Charging events", "Power, kW",  "Time, h", "Price, $", "Actions"]
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
-    const [selectedFilterStat, setFilterSat] = React.useState('All');
+    const [selectedFilterStat, setFilterSat] = React.useState('Last month');
     let  FilteredData = [];
+
+    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
 
     const handleCountry = event => {
         setSelectCountry(event.target.value);
@@ -44,10 +59,10 @@ function ScootersTable(inputData) {
 
     const handleFilter = event => {
         switch (event) {
-            case 'All': setFilter(1);setFilterSat('All');break;
-            case 'Charging': setFilter(2); setFilterSat('Charging');break;
-            case 'Charged': setFilter(3); setFilterSat('Charged');break;
-            case 'Not charging': setFilter(4);setFilterSat('Not charging');break;
+            case 'Last month': setFilter(1);setFilterSat('Last month');break;
+            case 'This month': setFilter(2); setFilterSat('This month');break;
+            case 'Last week': setFilter(3); setFilterSat('Last week');break;
+            case 'This week': setFilter(4);setFilterSat('This week');break;
         }
     };
 
@@ -206,27 +221,55 @@ function ScootersTable(inputData) {
                                             dropdownHeader="Select"
                                             onClick={handleFilter}
                                             dropdownList={[
-                                                "All",
-                                                { divider: true },
-                                                "Charging",
-                                                "Charged",
-                                                "Not charging"
+                                                "Last month",
+                                                "This month",
+                                                "Last week",
+                                                "This week"
                                             ]}
                                         />
                                     </FormControl>
                                 </GridItem>
                             </GridContainer>
                         </GridItem>
-                        <div style={{ marginLeft: "15px", marginTop: "20px"}}>
-                            <hr/>
-                            <h7 className={classes.selectInfoPanel}>
-                                Scooters qty: {scootersQty[0]}&nbsp;
-                                Granted: {scootersQty[2]}&nbsp;
-                                Denied:  {scootersQty[0] -scootersQty[2]}&nbsp;
-                                Charging: {scootersQty[1]}&nbsp;
-                                Not charging: {scootersQty[0] - scootersQty[1]}&nbsp;
-                            </h7>
-                        </div>
+                        <GridItem xs={12} sm={12} md={12}>
+                            <GridContainer>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                {/*<Grid container justify="space-around">*/}
+                                <GridItem>
+                                    <KeyboardDatePicker
+                                        disableToolbar
+                                        variant="inline"
+                                        format="MM/dd/yyyy"
+                                        margin="normal"
+                                        id="date-picker-inline"
+                                        label="Date from"
+                                        value={selectedDate}
+                                        onChange={handleDateChange}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change date',
+                                        }}
+                                    />
+                                </GridItem>
+                                <GridItem>
+                                    <KeyboardDatePicker
+                                        disableToolbar
+                                        variant="inline"
+                                        format="MM/dd/yyyy"
+                                        margin="normal"
+                                        id="date-picker-inline"
+                                        label="Date to"
+                                        value={selectedDate}
+                                        onChange={handleDateChange}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change date',
+                                        }}
+                                    />
+                                </GridItem>
+                                {/*</Grid>*/}
+                            </MuiPickersUtilsProvider>
+                            </GridContainer>
+
+                        </GridItem>
                     </CardBody>
                 </Card>
             </GridItem>
@@ -234,7 +277,7 @@ function ScootersTable(inputData) {
                 <Card>
                     <CardHeader color="rose" icon>
                         <CardIcon color="rose">
-                            <ScooterImg/>
+                            <EuroIcon/>
                         </CardIcon>
                         {/*<h4 className={classes.cardIconTitle}>Scooters</h4>*/}
                     </CardHeader>
@@ -324,8 +367,9 @@ export default class PowerAndCost extends React.Component {
         return (
             <div>
                 <ScootersTable
-                    inputDataScooter={this.state.rows}
-                    inputDataScooterQty ={this.state.rowsQty}/>
+                    inputDataScooter={[]}
+                    inputDataScooterQty ={this.state.rowsQty}
+                />
             </div>
         )
     }
