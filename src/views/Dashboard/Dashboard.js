@@ -6,18 +6,13 @@ import { VectorMap } from "react-jvectormap";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
-import Icon from "@material-ui/core/Icon";
-import Store from "@material-ui/icons/Store";
 import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import AccessTime from "@material-ui/icons/AccessTime";
 import Refresh from "@material-ui/icons/Refresh";
 import Edit from "@material-ui/icons/Edit";
-import Place from "@material-ui/icons/Place";
-import ArtTrack from "@material-ui/icons/ArtTrack";
 import Language from "@material-ui/icons/Language";
 
 // core components
@@ -40,9 +35,6 @@ import {
 
 import styles from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.js";
 import {useEffect, useState} from "react";
-// import ChartistGraph from "react-chartist";
-// import { makeStyles } from "@material-ui/core/styles";
-// import Warning from "@material-ui/icons/EvStation";
 import Station from "@material-ui/icons/EvStation";
 import Slot from '@material-ui/icons/BatteryChargingFull';
 import Scooter from "@material-ui/icons/TwoWheeler";
@@ -53,67 +45,19 @@ import configData from "../../config.json";
 
 const useStyles = makeStyles(styles);
 
-export default function Dashboard() {
+function DashboardInfo(data) {
   const classes = useStyles();
 
-  const [scooterQty, setScooterQty] = useState(0);
-  const [stationQty, setStationQty] = useState(0);
-  const [slotQty, setSlotQty] = useState(0);
-  const [availableQty, setAvailableQty] = useState(0);
+  const dataStation = data.dataCount;
+  const dataMaps = data.dataForMap;
+
   const [geodata, setGeodata] = useState([]);
-  const [outData, setOutData] = useState([]);
+  const stationQty=dataStation[0];
+  const slotQty=dataStation[1];
+  const availableQty=dataStation[2];
+  const scooterQty=dataStation[3];
+  const chargeScooterQty=dataStation[4];
 
-  const  countParameterStation = (data) => {
-    let countStation = 0;
-    let countSlot = 0;
-    let countAva = 0;
-    let geodata = [];
-    data.forEach((item) => {
-      setStationQty(++countStation);
-
-      if(item.arr_slots.length > 0) {
-        setSlotQty(countSlot += item.arr_slots.length);
-      }
-      // geodata.push(','+ countSlot);
-      item.arr_slots.forEach(slot => {
-        if(slot.slot_status === 0) {
-          setAvailableQty(++countAva)
-        }
-      })
-      item.geodata ? geodata.push(item.geodata + ';' + item.location +';'+ countSlot +';'+countAva ) : geodata.push([32.8, 35.1]);
-      setGeodata(geodata);
-      // geodata.push(','+countAva);
-      // setGeodata(geodata);
-    });
-  };
-
-  useEffect(() => {
-
-    fetch(configData.SERVER_URL+'scooter/all')
-        .then(response => {
-          if (!response.ok) {
-            console.log('error');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setScooterQty(data.length);
-        })
-
-
-    fetch(configData.SERVER_URL+'station/all')
-        .then(response => {
-          if (!response.ok) {
-            console.log('error');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if(data.length > 0) {
-            countParameterStation(data)
-          }
-        })
-  },[]);
 
   return (
     <div>
@@ -126,7 +70,7 @@ export default function Dashboard() {
               </CardIcon>
               <p className={classes.cardCategory}>Stations</p>
               <h3 className={classes.cardTitle}>
-                {stationQty}/1<small></small>
+                {dataStation[0]}/1<small></small>
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -165,12 +109,12 @@ export default function Dashboard() {
                 <Scooter/>
               </CardIcon>
               <p className={classes.cardCategory}>Scooters</p>
-              <h3 className={classes.cardTitle}>{availableQty}/{scooterQty}</h3>
+              <h3 className={classes.cardTitle}>{chargeScooterQty}/{scooterQty}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
                 <Scooter />
-                {slotQty - availableQty} ON CHARGE
+                {chargeScooterQty} ON CHARGE
               </div>
             </CardFooter>
           </Card>
@@ -210,7 +154,7 @@ export default function Dashboard() {
                 {/*  <Table*/}
                 {/*    tableData={[*/}
                 {/*      [*/}
-                {/*        <img src={us_flag} alt="us_flag" key={"flag"} />,*/}
+                {/*        // <img src={us_flag} alt="us_flag" key={"flag"} />,*/}
                 {/*        "USA",*/}
                 {/*        "2.920",*/}
                 {/*        "53.23%"*/}
@@ -220,7 +164,7 @@ export default function Dashboard() {
                 {/*  />*/}
                 {/*</GridItem>*/}
                 <GridItem xs={12} sm={12} md={12}>
-                  <Map geodata={geodata}/>
+                  <Map geodata={dataMaps}/>
                 </GridItem>
               </GridContainer>
             </CardBody>
@@ -236,7 +180,7 @@ export default function Dashboard() {
                 data={dailySalesChart.data}
                 type="Line"
                 options={dailySalesChart.options}
-                listener={dailySalesChart.animation}
+                // listener={dailySalesChart.animation}
               />
             </CardHeader>
             <CardBody>
@@ -262,7 +206,7 @@ export default function Dashboard() {
                   </Button>
                 </Tooltip>
               </div>
-              <h4 className={classes.cardTitle}>Last Campaign Performance</h4>
+              <h4 className={classes.cardTitle}>Energy consumption data for the period</h4>
               <p className={classes.cardCategory}>
                 <span className={classes.successText}>
                   <ArrowUpward className={classes.upArrowCardCategory} /> 55%
@@ -286,7 +230,7 @@ export default function Dashboard() {
                 type="Bar"
                 options={emailsSubscriptionChart.options}
                 responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                listener={emailsSubscriptionChart.animation}
+                // listener={emailsSubscriptionChart.animation}
               />
             </CardHeader>
             <CardBody>
@@ -312,8 +256,8 @@ export default function Dashboard() {
                   </Button>
                 </Tooltip>
               </div>
-              <h4 className={classes.cardTitle}>Last Campaign Performance</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <h4 className={classes.cardTitle}>Energy consumption data for the period</h4>
+              <p className={classes.cardCategory}>Energy consumption data for the period</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -330,7 +274,7 @@ export default function Dashboard() {
                 data={completedTasksChart.data}
                 type="Line"
                 options={completedTasksChart.options}
-                listener={completedTasksChart.animation}
+                // listener={completedTasksChart.animation}
               />
             </CardHeader>
             <CardBody>
@@ -357,7 +301,7 @@ export default function Dashboard() {
                 </Tooltip>
               </div>
               <h4 className={classes.cardTitle}>Energy consumption during the period</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <p className={classes.cardCategory}>Energy consumption data for the period</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -369,4 +313,106 @@ export default function Dashboard() {
       </GridContainer>
     </div>
   );
+}
+export default class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      rows:[],
+      dataQty: [],
+      dataForMap: [],
+      scooterCount: 0,
+      chargingScooterCount: 0
+    };
+    this.GetStationData = this.GetStationData.bind(this);
+    this.getScooterData = this.getScooterData.bind(this);
+  }
+
+  GetStationData() {
+      fetch(configData.SERVER_URL+'station/all')
+          .then(response => {
+              if (!response.ok) {
+                  console.log('error');
+              }
+              return response.json();
+          })
+          .then((data) => {
+              if(data.length > 0) {
+                  this.setStationData(data)
+              }
+          })
+          .then( setTimeout(this.GetStationData, 1000))
+  }
+
+  getScooterData() {
+      fetch(configData.SERVER_URL+'scooter/all')
+          .then(response => {
+            if (!response.ok) {
+              console.log('error');
+            }
+            return response.json();
+          })
+          .then((data) => {
+            this.setScooterData(data);
+            console.log("data- " + data);
+          })
+          .then( setTimeout(this.getScooterData, 1000))
+  }
+
+  setScooterData(data) {
+      let chargingScooterCount = 0;
+      data.forEach(scooter => {
+         if(scooter.sc_status === 1) {
+           chargingScooterCount++;
+          }
+      })
+      this.setState({scooterCount: data.length});
+      this.setState({chargingScooterCount: chargingScooterCount});
+  }
+
+  setStationData(data) {
+      let dataInfoForMap = {};
+      // dataInfoForMap.address = ""
+      let tmpDataInfoForMap = [];
+      let dataCount = [];
+      let countStation = 0;
+      let countSlots = 0;
+      let availableSlot = 0;
+      let tmpCountSlot;
+      let tmpCountAva;
+      data.forEach((item) => {
+          countStation++;
+          tmpCountSlot = 0;
+          tmpCountAva = 0;
+          dataInfoForMap.address = item.location;
+          dataInfoForMap.geodata = item.geodata;
+          item.arr_slots.forEach((sl) => {
+              countSlots++;
+              tmpCountSlot++;
+              if(sl.slot_status === 0) {
+                  availableSlot++;
+                  tmpCountAva++;
+              }
+          });
+          dataInfoForMap.countSlot = tmpCountSlot;
+          dataInfoForMap.countAvaSlot = tmpCountAva;
+          // dataInfoForMap.push(tmpDataInfoForMap);
+      })
+    dataCount.push(countStation, countSlots, availableSlot, this.state.scooterCount, this.state.chargingScooterCount);
+    this.setState({dataQty: dataCount});
+    this.setState({dataForMap: dataInfoForMap});
+  }
+
+  componentDidMount() {
+    this.GetStationData();
+    this.getScooterData();
+  }
+
+  render() {
+    return (
+        <div>
+          <DashboardInfo dataCount = {this.state.dataQty} dataForMap = {this.state.dataForMap}/>
+        </div>
+    )
+  }
 }
