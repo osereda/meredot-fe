@@ -34,7 +34,6 @@ export default function MapCenterMark(geodata) {
     };
 
     useEffect(() => {
-        console.log(coords);
     }, [coords]);
 
     return (
