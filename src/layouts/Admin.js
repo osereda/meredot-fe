@@ -185,18 +185,18 @@ export default function Dashboard(props) {
           </div>
         )}
         {getRoute() ? <Footer fluid /> : null}
-        <FixedPlugin
-          handleImageClick={handleImageClick}
-          handleColorClick={handleColorClick}
-          handleBgColorClick={handleBgColorClick}
-          color={color}
-          bgColor={bgColor}
-          bgImage={image}
-          handleFixedClick={handleFixedClick}
-          fixedClasses={fixedClasses}
-          sidebarMinimize={sidebarMinimize.bind(this)}
-          miniActive={miniActive}
-        />
+        {/*<FixedPlugin*/}
+        {/*  handleImageClick={handleImageClick}*/}
+        {/*  handleColorClick={handleColorClick}*/}
+        {/*  handleBgColorClick={handleBgColorClick}*/}
+        {/*  color={color}*/}
+        {/*  bgColor={bgColor}*/}
+        {/*  bgImage={image}*/}
+        {/*  handleFixedClick={handleFixedClick}*/}
+        {/*  fixedClasses={fixedClasses}*/}
+        {/*  sidebarMinimize={sidebarMinimize.bind(this)}*/}
+        {/*  miniActive={miniActive}*/}
+        {/*/>*/}
       </div>
     </div>
   );

@@ -152,7 +152,7 @@ export default function HeaderLinks(props) {
                 : classes.links)
             }
           />
-          <span className={classes.notifications}>5</span>
+          <span className={classes.notifications}>0</span>
           <Hidden mdUp implementation="css">
             <span
               onClick={handleClickNotification}
@@ -181,46 +181,46 @@ export default function HeaderLinks(props) {
               style={{ transformOrigin: "0 0 0" }}
             >
               <Paper className={classes.dropdown}>
-                <ClickAwayListener onClickAway={handleCloseNotification}>
-                  <MenuList role="menu">
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={dropdownItem}
-                    >
-                      {rtlActive
-                        ? "إجلاء أوزار الأسيوي حين بل, كما"
-                        : "Mike John responded to your email"}
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={dropdownItem}
-                    >
-                      {rtlActive
-                        ? "شعار إعلان الأرضية قد ذلك"
-                        : "You have 5 new tasks"}
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={dropdownItem}
-                    >
-                      {rtlActive
-                        ? "ثمّة الخاصّة و على. مع جيما"
-                        : "You're now friend with Andrew"}
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={dropdownItem}
-                    >
-                      {rtlActive ? "قد علاقة" : "Another Notification"}
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={dropdownItem}
-                    >
-                      {rtlActive ? "قد فاتّبع" : "Another One"}
-                    </MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
+                {/*<ClickAwayListener onClickAway={handleCloseNotification}>*/}
+                {/*  <MenuList role="menu">*/}
+                {/*    <MenuItem*/}
+                {/*      onClick={handleCloseNotification}*/}
+                {/*      className={dropdownItem}*/}
+                {/*    >*/}
+                {/*      {rtlActive*/}
+                {/*        ? "إجلاء أوزار الأسيوي حين بل, كما"*/}
+                {/*        : "Mike John responded to your email"}*/}
+                {/*    </MenuItem>*/}
+                {/*    <MenuItem*/}
+                {/*      onClick={handleCloseNotification}*/}
+                {/*      className={dropdownItem}*/}
+                {/*    >*/}
+                {/*      {rtlActive*/}
+                {/*        ? "شعار إعلان الأرضية قد ذلك"*/}
+                {/*        : "You have 5 new tasks"}*/}
+                {/*    </MenuItem>*/}
+                {/*    <MenuItem*/}
+                {/*      onClick={handleCloseNotification}*/}
+                {/*      className={dropdownItem}*/}
+                {/*    >*/}
+                {/*      {rtlActive*/}
+                {/*        ? "ثمّة الخاصّة و على. مع جيما"*/}
+                {/*        : "You're now friend with Andrew"}*/}
+                {/*    </MenuItem>*/}
+                {/*    <MenuItem*/}
+                {/*      onClick={handleCloseNotification}*/}
+                {/*      className={dropdownItem}*/}
+                {/*    >*/}
+                {/*      {rtlActive ? "قد علاقة" : "Another Notification"}*/}
+                {/*    </MenuItem>*/}
+                {/*    <MenuItem*/}
+                {/*      onClick={handleCloseNotification}*/}
+                {/*      className={dropdownItem}*/}
+                {/*    >*/}
+                {/*      {rtlActive ? "قد فاتّبع" : "Another One"}*/}
+                {/*    </MenuItem>*/}
+                {/*  </MenuList>*/}
+                {/*</ClickAwayListener>*/}
               </Paper>
             </Grow>
           )}
