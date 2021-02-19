@@ -240,7 +240,7 @@ function StationsTab(inputData) {
                     </CardBody>
                 </Card>
             </GridItem>
-            <GridItem xs={12}>
+            <GridItem xs={12} sm={12} md={12} lg={12}>
                 {stations.map(item => {
                     return(
                     <Card>
@@ -254,10 +254,22 @@ function StationsTab(inputData) {
                             <Table
                                 tableHead={tableHeadData}
                                 tableData={item.FilteredData}
-                                customCellClasses={[classes.center, classes.center, classes.right]}
-                                customClassesForCells={[0, 4, 5]}
-                                customHeadCellClasses={[ classes.center, classes.center, classes.right]}
-                                customHeadClassesForCells={[0, 4, 5]}
+                                customCellClasses={[
+                                    classes.center,
+                                    classes.width,
+                                    classes.width,
+                                    classes.width,
+                                    classes.center,
+                                    classes.right]}
+                                customClassesForCells={[0, 1, 2, 3, 4, 5]}
+                                customHeadCellClasses={[
+                                    classes.center,
+                                    classes.width,
+                                    classes.width,
+                                    classes.width,
+                                    classes.center,
+                                    classes.right]}
+                                customHeadClassesForCells={[0, 1, 2, 3, 4, 5]}
                             />
                         </CardBody>
                     </Card>
