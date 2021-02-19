@@ -92,7 +92,6 @@ class Sidebar extends React.Component {
   }
   // verifies if routeName is the one active (in browser input)
   activeRoute = routeName => {
-    console.log(routeName);
     return window.location.href.indexOf(routeName) > -1 ? "active" : "";
   };
   openCollapse(collapse) {

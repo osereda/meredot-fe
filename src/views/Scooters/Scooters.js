@@ -214,8 +214,7 @@ function ScootersTable(inputData) {
                             </GridItem>
                         </GridContainer>
 
-                        <div style={{ marginLeft: "15px", marginTop: "20px"}}>
-                            <hr/>
+                        <div style={{ marginLeft: "15px", marginTop: "40px"}}>
                             <h7 className={classes.selectInfoPanel}>
                             Scooters qty: {scootersQty[0]}&nbsp;
                             Granted: {scootersQty[2]}&nbsp;

@@ -9,13 +9,28 @@ const extendedTablesStyle = {
   ...customCheckboxRadioSwitch,
   ...buttonGroupStyle,
   right: {
-    textAlign: "right"
+    textAlign: "right",
+    minWidth: "80px",
+    // width: "200px"
+  },
+  rightEnd: {
+    textAlign: "right",
+    width: "180px",
+    maxWidth: "180px !important"
+  },
+  left: {
+    textAlign: "center",
+    minWidth: "30px",
+    maxWidth: "60px"
   },
   center: {
-    textAlign: "center"
+    textAlign: "center",
+    minWidth: "125px",
+    // width: "200px"
   },
   width: {
-    minWidth: "125px"
+    minWidth: "125px",
+    // width: "200px"
   },
   description: {
     maxWidth: "150px"

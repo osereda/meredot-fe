@@ -227,8 +227,7 @@ function StationsTab(inputData) {
                             </GridItem>
                         </GridContainer>
 
-                        <div style={{ marginLeft: "15px", marginTop: "20px"}}>
-                            <hr/>
+                        <div style={{ marginLeft: "15px", marginTop: "40px"}}>
                             <h7 className={classes.selectInfoPanel}>
                             Station qty: {stationQty[0]}&nbsp;
                             Pad qty: {stationQty[1]}&nbsp;
@@ -255,20 +254,20 @@ function StationsTab(inputData) {
                                 tableHead={tableHeadData}
                                 tableData={item.FilteredData}
                                 customCellClasses={[
+                                    classes.left,
                                     classes.center,
-                                    classes.width,
-                                    classes.width,
-                                    classes.width,
                                     classes.center,
-                                    classes.right]}
+                                    classes.center,
+                                    classes.center,
+                                    classes.rightEnd]}
                                 customClassesForCells={[0, 1, 2, 3, 4, 5]}
                                 customHeadCellClasses={[
+                                    classes.left,
                                     classes.center,
-                                    classes.width,
-                                    classes.width,
-                                    classes.width,
                                     classes.center,
-                                    classes.right]}
+                                    classes.center,
+                                    classes.center,
+                                    classes.rightEnd]}
                                 customHeadClassesForCells={[0, 1, 2, 3, 4, 5]}
                             />
                         </CardBody>
