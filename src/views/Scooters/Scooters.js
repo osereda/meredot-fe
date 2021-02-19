@@ -99,7 +99,7 @@ function ScootersTable(inputData) {
                                       direction="row"
                                       justify="flex-start"
                                       alignItems="flex-start"  >
-                                <GridItem xs={12} sm={7} md={6} lg={5}>
+                                <GridItem xs={12} sm={7} md={6} lg={4}>
                                     <FormControl fullWidth className={classes.selectFormControl}>
                                         <InputLabel
                                             htmlFor="simple-select"
