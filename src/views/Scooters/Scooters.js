@@ -238,10 +238,26 @@ function ScootersTable(inputData) {
                         <Table
                             tableHead = {tableHeadData}
                             tableData={FilteredData}
-                            customCellClasses={[classes.center, classes.right]}
-                            customClassesForCells={[6, 7]}
-                            customHeadCellClasses={[ classes.center, classes.right]}
-                            customHeadClassesForCells={[6, 7]}
+                            customCellClasses={[
+                                classes.left,
+                                classes.center,
+                                classes.center,
+                                classes.center,
+                                classes.center,
+                                classes.center,
+                                classes.center,
+                                classes.right]}
+                            customClassesForCells={[0,1,2,3,4,5,6,7]}
+                            customHeadCellClasses={[
+                                classes.left,
+                                classes.center,
+                                classes.center,
+                                classes.center,
+                                classes.center,
+                                classes.center,
+                                classes.center,
+                                classes.right]}
+                            customHeadClassesForCells={[0,1,2,3,4,5,6,7]}
                         />
                     </CardBody>
                 </Card>
