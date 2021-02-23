@@ -20,6 +20,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
 import configData from "../../config.json";
 import Grid from "@material-ui/core/Grid";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import {NativeSelect} from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
@@ -111,90 +113,35 @@ function StationsTab(inputData) {
                                       alignItems="flex-start"  >
                                 <GridItem xs={12} sm={7} md={6} lg={4}>
                                     <FormControl fullWidth className={classes.selectFormControl}>
-                                        <InputLabel
-                                            htmlFor="simple-select"
-                                            className={classes.selectLabel}
-                                        >
-                                            Choose Country
-                                        </InputLabel>
-                                        <Select
-                                            MenuProps={{className: classes.selectMenu }}
-                                            classes={{ select: classes.select }}
-                                            value={selectCountry}
-                                            onChange={handleCountry}
+                                        <InputLabel htmlFor="uncontrolled-native">Choose Country</InputLabel>
+                                        <NativeSelect
+                                            defaultValue={1}
                                             inputProps={{
-                                                name: "simpleSelect",
-                                                id: "simple-select"
+                                                name: 'name',
+                                                id: 'uncontrolled-native',
                                             }}
+                                            onChange={handleCountry}
                                         >
-                                            <MenuItem
-                                                disabled
-                                                classes={{root: classes.selectMenuItem }}
-                                            >
-                                                Choose Country
-                                            </MenuItem>
-                                            <MenuItem
-                                                classes={{
-                                                    root: classes.selectMenuItem,
-                                                    selected: classes.selectMenuItemSelected
-                                                }}
-                                                value="2"
-                                            >
-                                                All
-                                            </MenuItem>
-                                            <MenuItem
-                                                classes={{
-                                                    root: classes.selectMenuItem,
-                                                    selected: classes.selectMenuItemSelected
-                                                }}
-                                                value="3"
-                                            >
-                                                Israel
-                                            </MenuItem>
-
-
-                                        </Select>
+                                            <option value={1}>All</option>
+                                            <option value={2}>Israel</option>
+                                        </NativeSelect>
                                     </FormControl>
                                 </GridItem>
                                 <GridItem xs={12} sm={7} md={6} lg={4} >
-                                    <FormControl  fullWidth   className={classes.selectFormControl}>
-                                        <InputLabel  htmlFor="simple-select" className={classes.selectLabel}>
-                                            Choose City
-                                        </InputLabel>
-                                        <Select
-                                            MenuProps={{ className: classes.selectMenu }}
-                                            classes={{ select: classes.select }}
-                                            value={selectCity}
-                                            onChange={handleCity}
+                                    <FormControl fullWidth className={classes.selectFormControl}>
+                                        <InputLabel htmlFor="uncontrolled-native">Choose City</InputLabel>
+                                        <NativeSelect
+                                            defaultValue={11}
                                             inputProps={{
-                                                name: "simpleSelect",
-                                                id: "simple-select"
+                                                name: 'name',
+                                                id: 'uncontrolled-native',
                                             }}
+                                            onChange={handleCity}
                                         >
-                                            <MenuItem disabled  classes={{root: classes.selectMenuItem }}>
-                                                Choose City
-                                            </MenuItem>
-                                            <MenuItem classes={{
-                                                root: classes.selectMenuItem,
-                                                selected: classes.selectMenuItemSelected
-                                            }}
-                                                      value="12"
-                                            >
-                                                All
-                                            </MenuItem>
-                                            <MenuItem
-                                                classes={{
-                                                    root: classes.selectMenuItem,
-                                                    selected: classes.selectMenuItemSelected
-                                                }}
-                                                value="13"
-                                            >
-                                                Tel Aviv
-                                            </MenuItem>
-                                        </Select>
-
+                                            <option value={11}>All</option>
+                                            <option value={12}>Tel Aviv</option>
+                                        </NativeSelect>
                                     </FormControl>
-
                                 </GridItem>
                             </GridItem>
                             <GridItem xs={12} sm={12} md={3} lg={2}>
