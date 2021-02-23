@@ -144,25 +144,9 @@ function DashboardInfo(data) {
               <CardIcon color="success">
                 <Language />
               </CardIcon>
-              <h4 className={classes.cardIconTitle}>
-                Popular Station
-              </h4>
             </CardHeader>
             <CardBody>
               <GridContainer justify="space-between">
-                {/*<GridItem xs={12} sm={12} md={5}>*/}
-                {/*  <Table*/}
-                {/*    tableData={[*/}
-                {/*      [*/}
-                {/*        // <img src={us_flag} alt="us_flag" key={"flag"} />,*/}
-                {/*        "USA",*/}
-                {/*        "2.920",*/}
-                {/*        "53.23%"*/}
-                {/*      ]*/}
-
-                {/*    ]}*/}
-                {/*  />*/}
-                {/*</GridItem>*/}
                 <GridItem xs={12} sm={12} md={12}>
                   <Map geodata={dataMaps}/>
                 </GridItem>

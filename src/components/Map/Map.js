@@ -48,7 +48,7 @@ export default function MapCenterMark(inputGeoData) {
             <div className="db_box">
                 <div className="db_item">
                     <Table
-                        tableHead={tableHeadData}
+                        // tableHead={tableHeadData}
                         tableData={[
                             ["0214552", inputGeoData.geodata.address, inputGeoData.geodata.countAvaSlot+"/"+ inputGeoData.geodata.countSlot]
                         ]}

@@ -36,6 +36,7 @@
   .db_item {
     /*margin-left: 16px;*/
     width:35%;
+    margin-top: 20px;
   }
   .db_item_map {
     position: relative;
@@ -51,6 +52,7 @@
   .db_item {
     /*margin-left: 16px;*/
     width:35%;
+    margin-top: 20px;
   }
   .db_item_map {
     position: relative;
@@ -85,6 +87,7 @@
 }
 @media (max-width: 2400px) {
   .db_item {
+    margin-top: 20px;
     /*margin-left: 16px;*/
   }
 
