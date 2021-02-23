@@ -144,6 +144,7 @@ function DashboardInfo(data) {
               <CardIcon color="success">
                 <Language />
               </CardIcon>
+              <h4 className={classes.cardIconTitle}>Popular station</h4>
             </CardHeader>
             <CardBody>
               <GridContainer justify="space-between">
