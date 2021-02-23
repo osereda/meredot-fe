@@ -51,6 +51,7 @@ function DashboardInfo(data) {
   const dataStation = data.dataCount;
   const dataMaps = data.dataForMap;
 
+
   const [geodata, setGeodata] = useState([]);
   const stationQty=dataStation[0];
   const slotQty=dataStation[1];
@@ -380,6 +381,7 @@ export default class Dashboard extends React.Component {
           });
           dataInfoForMap.countSlot = tmpCountSlot;
           dataInfoForMap.countAvaSlot = tmpCountAva;
+          dataInfoForMap.st_id = item.st_id;
           // dataInfoForMap.push(tmpDataInfoForMap);
       })
     dataCount.push(countStation, countSlots, availableSlot, this.state.scooterCount, this.state.chargingScooterCount);
