@@ -108,7 +108,15 @@ const extendedTablesStyle = {
     ...cardTitle,
     marginTop: "2px",
     marginBottom: "2px"
-  }
+  },
+  centerDashboard: {
+    textAlign: "center",
+    minWidth: "100px"
+  },
+  rightDashboard: {
+    textAlign: "center",
+    minWidth: "30px"
+  },
 };
 
 export default extendedTablesStyle;

@@ -2,9 +2,16 @@ import React, { useState, useEffect } from "react";
 import MapComponent from "./MapComponent";
 import './dashboard.css';
 import GridContainer from "../Grid/GridContainer";
-import Table from "../ReactTable/ReactTable";
+import Table from "components/Table/Table.js";
+//import Table from "@material-ui/core/Table";
+import {makeStyles} from "@material-ui/core/styles";
+import styles from "assets/jss/material-dashboard-pro-react/views/extendedTablesStyle.js";
+import CardBody from "../Card/CardBody";
+const useStyles = makeStyles(styles);
 
-export default function MapCenterMark(geodata) {
+export default function MapCenterMark(inputGeoData) {
+    const classes = useStyles();
+    const tableHeadData = ["ID", "Address", "Total"]
     let lat=32.8;
     let lon=35.1;
     let geoposition = [];
@@ -14,12 +21,12 @@ export default function MapCenterMark(geodata) {
     const [coordsCheckLat, setCoordsCheckLat] = useState(0);
     const [coordsCheckLon, setCoordsCheckLon] = useState(0);
 
-    if(geodata.geodata.geodata) {
-        if(coordsCheckLat !== geodata.geodata.geodata.split(",")[0] &&
-            coordsCheckLon !== geodata.geodata.geodata.split(",")[1]) {
-            lat = geodata.geodata.geodata.split(",")[0];
+    if(inputGeoData.geodata.geodata) {
+        if(coordsCheckLat !== inputGeoData.geodata.geodata.split(",")[0] &&
+            coordsCheckLon !== inputGeoData.geodata.geodata.split(",")[1]) {
+            lat = inputGeoData.geodata.geodata.split(",")[0];
             setCoordsCheckLat(lat);
-            lon = geodata.geodata.geodata.split(",")[1];
+            lon = inputGeoData.geodata.geodata.split(",")[1];
             setCoordsCheckLon(lon);
             setCoords([lat, lon]);
         }
@@ -40,28 +47,20 @@ export default function MapCenterMark(geodata) {
         <div className="db_container">
             <div className="db_box">
                 <div className="db_item">
-                    {/*{geoposition.map((item) => {*/}
-                    {/*    return (*/}
-                    <>
-                        <table style={{ width: "100%", marginTop: "20px"}}>
-                            <tr style={{borderBottom: "1px solid black"}}>
-                                <td style={{ textAlign: "left" , borderBottom: "1px solid #eee"}}>Address</td>
-                                <td style={{ paddingLeft: "5px" , borderBottom: "1px solid #eee"}}>Available slots</td>
-                                <td style={{ paddingLeft: "5px" , borderBottom: "1px solid #eee"}}>Number of slots</td>
-                            </tr >
-                            <tr>
-                                <td>{geodata.geodata.address}</td>
-                                <td style={{ textAlign: "center" }}>{geodata.geodata.countAvaSlot}</td>
-                                <td style={{ textAlign: "center" }}>{geodata.geodata.countSlot}</td><
-                            /tr>
-                        </table>
-                        {/*<ul onClick={handleChangeList}*/}
-                        {/*    style={{ marginLeft: "0", paddingLeft: "0" }}*/}
-                        {/*><p>{geodata.geodata.address}&nbsp;</p>{geodata.geodata.countAvaSlot}&nbsp;{geodata.geodata.countSlot}*/}
-                        {/*</ul>*/}
-                    </>
-                        {/*)*/}
-                    {/*})}*/}
+                    <Table
+                        tableHead={tableHeadData}
+                        tableData={[
+                            ["0214552", inputGeoData.geodata.address, inputGeoData.geodata.countAvaSlot+"/"+ inputGeoData.geodata.countSlot]
+                        ]}
+                        customCellClasses={[classes.left, classes.centerDashboard, classes.rightDashboard]}
+                        customClassesForCells={[0, 1, 2]}
+                        customHeadCellClasses={[
+                            classes.left,
+                            classes.centerDashboard,
+                            classes.rightDashboard
+                        ]}
+                        customHeadClassesForCells={[0, 1, 2]}
+                    />
                 </div>
                 <div className="db_item_map">
                     <MapComponent coords={coords}/>
