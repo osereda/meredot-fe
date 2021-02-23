@@ -103,6 +103,11 @@ const extendedTablesStyle = {
     ...cardTitle,
     marginTop: "15px",
     marginBottom: "0px"
+  },
+  cardIconTitleStation: {
+    ...cardTitle,
+    marginTop: "2px",
+    marginBottom: "2px"
   }
 };
 

@@ -247,7 +247,8 @@ function StationsTab(inputData) {
                             <CardIcon color="rose">
                                 <EvStationIcon/>
                             </CardIcon>
-                            <h5 className={classes.cardIconTitle}>Location: {item.location}</h5>
+                            <p className={classes.cardIconTitleStation}>ID: {item.st_id}</p>
+                            <p className={classes.cardIconTitleStation}>Location: {item.location}</p>
                         </CardHeader>
                         <CardBody>
                             <Table
