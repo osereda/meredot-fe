@@ -46,7 +46,7 @@ import EuroIcon from '@material-ui/icons/Euro';
 
 import Stations from 'views/Stations/Stations';
 import Scooters from 'views/Scooters/Scooters';
-import PowerAndCost from 'views/PowerAndCost/PowerAndCost';
+import Balance from 'views/Balance/Balance';
 import StationRating from 'views/StationRating/StationRating';
 import BillingAndHistory from 'views/BillingAndHistory/BillingAndHistory';
 import NewMassage from 'views/NewMassage/NewMassage';
@@ -77,11 +77,11 @@ var dashRoutes = [
     layout: "/admin"
   },
   {
-    path: "/pac",
-    name: "Power and Cost",
-    mini: "PAC",
+    path: "/balance",
+    name: "Balance",
+    mini: "PAL",
     icon: EuroIcon,
-    component: PowerAndCost,
+    component: Balance,
     layout: "/admin"
   },
   {

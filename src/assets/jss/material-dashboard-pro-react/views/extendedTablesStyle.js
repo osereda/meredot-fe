@@ -117,6 +117,11 @@ const extendedTablesStyle = {
     textAlign: "center",
     minWidth: "30px"
   },
+  marginRight: {
+    marginRight: "0",
+    width: "100%",
+    marginTop: "15px"
+  },
 };
 
 export default extendedTablesStyle;
