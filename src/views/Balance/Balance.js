@@ -21,23 +21,23 @@ import {NativeSelect} from "@material-ui/core";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import EuroIcon from '@material-ui/icons/Euro';
+import isWeekend from 'date-fns/isWeekend';
 
 const useStyles = makeStyles(styles);
 
 function BalanceTable(inputData) {
 
     const classes = useStyles();
-    const scooters = inputData.inputDataScooter;
-    const scootersQty = inputData.inputDataScooterQty;
-    const tableHeadData=["#", "Date","City", "Charging events", "Power, kW",  "Time, h", "Price, $", "Actions"]
+    const balance = inputData.inputDataBalance;
+    const tableHeadData=["#", "Date", "Power, kW",  "Time, h", "Price, $", "Actions"]
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
     const [selectedFilterStat, setFilterSat] = React.useState('Last month');
     let  FilteredData = [];
 
-    const [selectedDateFrom, setSelectedDateFrom] = React.useState(new Date('2021-01-18T21:11:54'));
-    const [selectedDateTo, setSelectedDateTo] = React.useState(new Date('2021-02-18T21:11:54'));
+    const [selectedDateFrom, setSelectedDateFrom] = React.useState(new Date('2021-02-02'));
+    const [selectedDateTo, setSelectedDateTo] = React.useState(new Date());
     const handleDateChange = (date) => {
         setSelectedDateTo(date);
     };
@@ -53,7 +53,6 @@ function BalanceTable(inputData) {
     const handleCity = event => {
         setSelectCity(event.target.value);
     };
-
     const handleFilter = event => {
         switch (event) {
             case 'Last month': setFilter(1);setFilterSat('Last month');break;
@@ -75,27 +74,20 @@ function BalanceTable(inputData) {
         );
     });
 
-    scooters.forEach(scooter => {
+    let filteredDates = [];
+    balance.forEach(balance => {
         let arrInner = [];
-        arrInner = scooter.slice();
+        arrInner = balance.slice();
         arrInner.push(fillButtons);
-        switch(selectedFilter) {
-            case 1: FilteredData.push(arrInner); break;
-            case 2: {scooter.forEach(item => {
-                if(item === "Charging") FilteredData.push(arrInner)
-            })
-            } break;
-            case 3: {scooter.forEach(item => {
-                if(item === "Charged") FilteredData.push(arrInner)
-            })
-            } break;
-            case 4: {scooter.forEach(item => {
-                if(item === "Not charging") FilteredData.push(arrInner)
-            })
-            } break;
-        }
+        FilteredData.push(arrInner);
+        filteredDates = FilteredData.filter(date => {
+            if(new Date(date[1]) - new Date(selectedDateFrom.toString()) >= 0 &&
+                new Date(selectedDateTo.toString())  - new Date(date[1]) >= 0 ){
+                    return date
+                }
+        });
     })
-    FilteredData = FilteredData.slice();
+    FilteredData = filteredDates.slice();
 
     return (
         <GridContainer>
@@ -103,54 +95,54 @@ function BalanceTable(inputData) {
                 <Card>
                     <CardBody>
 
-                        <GridContainer justify="space-between">
-                            <GridItem xs={12} sm={12} md={7}
-                                      container
-                                      direction="row"
-                                      justify="flex-start"
-                                      alignItems="flex-start"  >
-                                <GridItem xs={10} sm={6} md={6} lg={5} >
-                                    <FormControl fullWidth className={classes.selectFormControl}>
-                                        <InputLabel htmlFor="uncontrolled-native">Choose City</InputLabel>
-                                        <NativeSelect
-                                            defaultValue={11}
-                                            inputProps={{
-                                                name: 'name',
-                                                id: 'uncontrolled-native',
-                                            }}
-                                            onChange={handleCity}
-                                        >
-                                            <option value={11}>All</option>
-                                            <option value={12}>Tel Aviv</option>
-                                        </NativeSelect>
-                                    </FormControl>
-                                </GridItem>
-                            </GridItem>
-                            <GridItem xs={12} sm={10} md={4} lg={3}>
-                                <Grid xs={12} sm={8} md={12} lg={12} >
-                                    <FormControl  fullWidth   className={classes.selectFormControl}>
-                                        <CustomDropdown
-                                            hoverColor="info"
-                                            buttonText={selectedFilterStat}
-                                            buttonProps={{
-                                                round: true,
-                                                fullWidth: true,
-                                                style: { marginBottom: "0" },
-                                                color: "info"
-                                            }}
-                                            dropdownHeader="Select period"
-                                            onClick={handleFilter}
-                                            dropdownList={[
-                                                "Last month",
-                                                "This month",
-                                                "Last week",
-                                                "This week"
-                                            ]}
-                                        />
-                                    </FormControl>
-                                </Grid>
-                            </GridItem>
-                        </GridContainer>
+                        {/*<GridContainer justify="space-between">*/}
+                        {/*    <GridItem xs={12} sm={12} md={7}*/}
+                        {/*              container*/}
+                        {/*              direction="row"*/}
+                        {/*              justify="flex-start"*/}
+                        {/*              alignItems="flex-start"  >*/}
+                        {/*        <GridItem xs={10} sm={6} md={6} lg={5} >*/}
+                        {/*            <FormControl fullWidth className={classes.selectFormControl}>*/}
+                        {/*                <InputLabel htmlFor="uncontrolled-native">Choose City</InputLabel>*/}
+                        {/*                <NativeSelect*/}
+                        {/*                    defaultValue={11}*/}
+                        {/*                    inputProps={{*/}
+                        {/*                        name: 'name',*/}
+                        {/*                        id: 'uncontrolled-native',*/}
+                        {/*                    }}*/}
+                        {/*                    onChange={handleCity}*/}
+                        {/*                >*/}
+                        {/*                    <option value={11}>All</option>*/}
+                        {/*                    <option value={12}>Tel Aviv</option>*/}
+                        {/*                </NativeSelect>*/}
+                        {/*            </FormControl>*/}
+                        {/*        </GridItem>*/}
+                        {/*    </GridItem>*/}
+                        {/*    <GridItem xs={12} sm={10} md={4} lg={3}>*/}
+                        {/*        <Grid xs={12} sm={8} md={12} lg={12} >*/}
+                        {/*            <FormControl  fullWidth   className={classes.selectFormControl}>*/}
+                        {/*                <CustomDropdown*/}
+                        {/*                    hoverColor="info"*/}
+                        {/*                    buttonText={selectedFilterStat}*/}
+                        {/*                    buttonProps={{*/}
+                        {/*                        round: true,*/}
+                        {/*                        fullWidth: true,*/}
+                        {/*                        style: { marginBottom: "0" },*/}
+                        {/*                        color: "info"*/}
+                        {/*                    }}*/}
+                        {/*                    dropdownHeader="Select period"*/}
+                        {/*                    onClick={handleFilter}*/}
+                        {/*                    dropdownList={[*/}
+                        {/*                        "Last month",*/}
+                        {/*                        "This month",*/}
+                        {/*                        "Last week",*/}
+                        {/*                        "This week"*/}
+                        {/*                    ]}*/}
+                        {/*                />*/}
+                        {/*            </FormControl>*/}
+                        {/*        </Grid>*/}
+                        {/*    </GridItem>*/}
+                        {/*</GridContainer>*/}
                         <GridContainer justify="space-between">
                             <GridItem xs={10} sm={8} md={7}
                                       container
@@ -161,6 +153,7 @@ function BalanceTable(inputData) {
                                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                         <KeyboardDatePicker
                                             disableToolbar
+                                            maxDate={new Date()}
                                             variant="inline"
                                             format="MM/dd/yyyy"
                                             margin="normal"
@@ -178,6 +171,8 @@ function BalanceTable(inputData) {
                                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                         <KeyboardDatePicker
                                             disableToolbar
+                                            // shouldDisableDate={isWeekend}
+                                            maxDate={new Date()}
                                             variant="inline"
                                             format="MM/dd/yyyy"
                                             margin="normal"
@@ -251,12 +246,12 @@ export default class Balance extends React.Component {
             rowsQty:[],
         };
 
-        this.getScooterData = this.getScooterData.bind(this);
+        this.getBalanceData = this.getBalanceData.bind(this);
 
     }
 
-    getScooterData() {
-        fetch(configData.SERVER_URL+'scooter/all')
+    getBalanceData() {
+        fetch(configData.SERVER_URL+'balance/all')
             .then(response => {
                 if (!response.ok) {
                     console.log('error');
@@ -264,57 +259,36 @@ export default class Balance extends React.Component {
                 return response.json();
             })
             .then((data) => {
-                this.setScooterData(data);
+                this.setBalanceData(data);
                 // this.setState({ rows: data})
             })
-            .then( setTimeout(this.getScooterData, 700))
+            .then( setTimeout(this.getBalanceData, 700))
     }
 
-    setScooterData(data) {
-        let chargingQty = 0;
-        let notChargingQty = 0;
-        let grantedQty = 0;
-        let deniedQty = 0;
-        let scootersQty = 0;
+    setBalanceData(data) {
         let outData = [];
-        let outDataQty = [];
         data.forEach((item, i) => {
             item._id = ++i;
-            scootersQty++;
-            if(item.sc_status === 1) {
-                chargingQty++;
-                item.sc_status = 'Charging';
-            }
-            if(item.sc_status === 0 || item.sc_status === 3){
-                notChargingQty++;
-                item.sc_status = 'Not charging';
-            }
-            if(item.sc_perm === 1) {
-                grantedQty++;
-                item.sc_perm = 'Granted';
-            }
-            if(item.sc_perm === 0) {
-                deniedQty++;
-                item.sc_perm = 'Denied';
-            }
-            delete item.sc_operator;
+            item.bl_date = new Date(item.bl_date).toLocaleDateString("en-US") ;
+            item.bl_pow = item.bl_pow ? item.bl_pow.toFixed(2) : 0;
+            item.bl_price = item.bl_price ? item.bl_price.toFixed(2) : 0;
+            item.bl_time = item.bl_time ? item.bl_time.toFixed(2) : 0;
+            delete item.bl_location;
+            delete item.bl_scooter_event;
             outData.push(Object.values(item));
         })
-        outDataQty.push(scootersQty, chargingQty, grantedQty);
         this.setState({ rows: outData})
-        this.setState({ rowsQty: outDataQty})
     }
 
     componentDidMount() {
-        this.getScooterData();
+        this.getBalanceData();
     }
 
     render() {
         return (
             <div>
                 <BalanceTable
-                    inputDataScooter={this.state.rows}
-                    inputDataScooterQty ={this.state.rowsQty}/>
+                    inputDataBalance={this.state.rows}/>
             </div>
         )
     }

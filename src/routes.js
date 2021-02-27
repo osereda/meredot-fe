@@ -84,14 +84,14 @@ var dashRoutes = [
     component: Balance,
     layout: "/admin"
   },
-  {
-    path: "/sr",
-    name: "Station Rating",
-    mini: "SR",
-    icon: TrendingUpIcon,
-    component: StationRating,
-    layout: "/admin"
-  },
+  // {
+  //   path: "/sr",
+  //   name: "Station Rating",
+  //   mini: "SR",
+  //   icon: TrendingUpIcon,
+  //   component: StationRating,
+  //   layout: "/admin"
+  // },
   {
     path: "/bah",
     name: "Billing & History",
