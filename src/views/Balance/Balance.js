@@ -22,7 +22,7 @@ function BalanceTable(inputData) {
 
     const classes = useStyles();
     const balance = inputData.inputDataBalance;
-    const tableHeadData=["#", "Date", "Power, kW",  "Time, h", "Price, $"]
+    const tableHeadData=["#", "Date", "Charging counter", "Power, kW",  "Time, h", "Price, $"]
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
     const [selectedFilterStat, setFilterSat] = React.useState('Last month');
@@ -256,7 +256,6 @@ export default class Balance extends React.Component {
                 }
             }
             delete item.bl_location;
-            delete item.bl_scooter_event;
             outData.push(Object.values(item));
         })
         this.setState({ rows: outData})
