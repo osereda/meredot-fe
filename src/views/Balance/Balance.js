@@ -60,7 +60,7 @@ function BalanceTable(inputData) {
         arrInner = balance.slice();
         FilteredData.push(arrInner);
         filteredDates = FilteredData.filter(date => {
-            if(new Date(date[1]) - new Date(selectedDateFrom.toString()) >= 0 &&
+            if(new Date(date[1]) - new Date((selectedDateFrom.valueOf()-864e5)) > 0 &&
                 new Date(selectedDateTo.toString())  - new Date(date[1]) >= 0 ){
                     return date
                 }
