@@ -243,7 +243,7 @@ export default class Balance extends React.Component {
         data.forEach((item, i) => {
             item._id = ++i;
             item.bl_date = new Date(item.bl_date).toLocaleDateString("en-US") ;
-            item.bl_pow = item.bl_pow ? item.bl_pow.toFixed(2) : 0;
+            item.bl_pow = item.bl_pow ? item.bl_pow.toFixed(3) : 0;
             item.bl_price = item.bl_price ? item.bl_price.toFixed(2)*(-1) : 0;
             if(item.bl_time) {
                 if(item.bl_time/3600 > 1){
