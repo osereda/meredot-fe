@@ -101,6 +101,54 @@ export default function CustomTable(props) {
                 </TableRow>
               );
             }
+            if (prop.totalBalance) {
+              return (
+                  <>
+                  <TableRow key={key} hover={hover} className={tableRowClasses}>
+
+                    <TableCell
+                        className={classes.tableCell + " " + classes.tableCellTotalBalance}
+                    >
+                      In Total
+                    </TableCell>
+                    {tableHead.length - (prop.colspan - 0 + 2) > 0 ? (
+                        <TableCell
+                            className={classes.tableCell}
+                            colSpan={tableHead.length - (prop.colspan - 0 + 1)}
+                        />
+                    ) : null}
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                      {prop.amount[0]}
+                    </TableCell>
+                    <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                      {prop.amount[1]}
+                    </TableCell>
+                    <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                      {prop.amount[2]}
+                    </TableCell>
+                    <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                      {prop.amount[3]}
+                    </TableCell>
+                    <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                      {prop.amount[4]}
+                    </TableCell>
+                    <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                      {prop.amount[5]}
+                    </TableCell>
+                    {tableHead.length - (prop.colspan - 0 + 2) > 0 ? (
+                        <TableCell
+                            className={classes.tableCell}
+                            colSpan={tableHead.length - (prop.colspan - 0 + 3)}
+                        />
+                    ) : null}
+                  </TableRow>
+            </>
+
+              );
+            }
             if (prop.purchase) {
               return (
                 <TableRow key={key} hover={hover} className={tableRowClasses}>

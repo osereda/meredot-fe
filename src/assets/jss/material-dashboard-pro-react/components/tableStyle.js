@@ -74,13 +74,26 @@ const tableStyle = theme => ({
     fontWeight: "500",
     fontSize: "1.25em",
     paddingTop: "14px",
-    textAlign: "right"
+    textAlign: "right",
+    border: "none !important"
+  },
+  tableCellTotalBalance: {
+    fontWeight: "500",
+    fontSize: "1.25em",
+    paddingTop: "14px",
+    textAlign: "left"
   },
   tableCellAmount: {
     fontSize: "26px",
     fontWeight: "300",
     marginTop: "5px",
     textAlign: "right"
+  },
+  tableCellAmountBalance: {
+    fontSize: "14px",
+    fontWeight: "300",
+    marginTop: "5px",
+    textAlign: "center"
   },
   tableResponsive: {
     // width: "100%",

@@ -20,8 +20,15 @@ const useStyles = makeStyles(styles);
 
 function BalanceTable(inputData) {
 
+    const balanceTotal = ["A","B","C","D","E","C"];
     const classes = useStyles();
     const balance = inputData.inputDataBalance;
+    const total = {
+        totalBalance: true,
+            colspan: "0",
+        amount: balanceTotal
+    };
+    let balanceRest = 0
     const tableHeadData=["#", "Date", "Charging counter", "Power, kW",  "Time, h", "Price, $"]
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
@@ -55,18 +62,69 @@ function BalanceTable(inputData) {
     };
 
     let filteredDates = [];
-    balance.forEach(balance => {
-        let arrInner = [];
-        arrInner = balance.slice();
-        FilteredData.push(arrInner);
-        filteredDates = FilteredData.filter(date => {
-            if(new Date(date[1]) - new Date((selectedDateFrom.valueOf()-864e5)) > 0 &&
-                new Date(selectedDateTo.toString())  - new Date(date[1]) >= 0 ){
-                    return date
+    let outData = [];
+    let countN = 0;
+    let countDateFrom = 0;
+    let countDateTo = 0;
+    let countChargingCount = 0;
+    let countPower = 0;
+    let countTime = 0;
+    let countPrice = 0;
+    if(balance && balance.length > 0)
+        // console.log("balance"+balance);
+        filteredDates = balance.slice()
+        filteredDates.forEach((item, i) => {
+        if(new Date(item.bl_date) - new Date((selectedDateFrom.valueOf()-864e5)) > 0 &&
+            new Date(selectedDateTo.toString()) - new Date(item.bl_date) >= 0
+        ) {
+            if(i===0) {
+                countDateFrom = item.bl_date;
+            }
+            countDateTo = item.bl_date;
+            item._id = ++i;
+            countN = i;
+            countChargingCount+=item.bl_scooter_event;
+            countPower+=item.bl_pow;
+            countTime+=item.bl_time;
+            countPrice+=item.bl_price;
+            balanceRest = item.bl_balance;
+            item.bl_date = new Date(item.bl_date).toLocaleDateString("en-US");
+            // item.bl_pow = item.bl_pow ? item.bl_pow.toFixed(3) : 0;
+            item.bl_price = item.bl_price ? item.bl_price.toFixed(2) * (-1) : 0;
+            if (item.bl_time) {
+                if (item.bl_time / 3600 > 1) {
+                    let hour = (item.bl_time / 3600).toFixed(0);
+                    let min = ((item.bl_time % 3600) / 60).toFixed(0);
+                    if(!isNaN(min-0))item.bl_time = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
+                } else {
+                    let min = (item.bl_time / 60).toFixed(0);
+                    if(!isNaN(min-0))item.bl_time = min >= 10 ? "0 : " + min : "0 : 0" + min;
                 }
-        });
+            }
+            // this.setState({balance : item.bl_balance})
+            delete item.bl_location;
+            delete item.bl_balance;
+            outData.push(Object.values(item));
+            FilteredData = outData;
+            balanceTotal[0]=countN;
+            balanceTotal[1]=new Date(countDateFrom).toLocaleDateString("en-US") + " - "
+                + new Date(countDateTo).toLocaleDateString("en-US");
+            balanceTotal[2]=countChargingCount;
+            balanceTotal[3]=countPower;
+            balanceTotal[5]=countPrice*(-1);
+
+            if (countTime / 3600 > 1) {
+                let hour = (countTime / 3600).toFixed(0);
+                let min = ((countTime% 3600) / 60).toFixed(0);
+                balanceTotal[4] = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
+            } else {
+                let min = (countTime / 60).toFixed(0);
+                balanceTotal[4] = min >= 10 ? "0 : " + min : "0 : 0" + min;
+            }
+        }
     })
-    FilteredData = filteredDates.slice();
+    FilteredData.push(total);
+
 
     return (
         <GridContainer>
@@ -183,7 +241,7 @@ function BalanceTable(inputData) {
                         <CardIcon color="rose">
                             <EuroIcon/>
                         </CardIcon>
-                        {/*<h4 className={classes.cardIconTitle}>Scooters</h4>*/}
+                        <h4 className={classes.cardIconTitle}>On balance - {balanceRest} $</h4>
                     </CardHeader>
                     <CardBody>
                         <Table
@@ -219,8 +277,10 @@ export default class Balance extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: {},
             rows:[],
-            rowsQty:[],
+            rowsTotal:[],
+            balance: 0
         };
 
         this.getBalanceData = this.getBalanceData.bind(this);
@@ -236,6 +296,7 @@ export default class Balance extends React.Component {
                 return response.json();
             })
             .then((data) => {
+                this.setState({ data: data});
                 this.setBalanceData(data);
                 // this.setState({ rows: data})
             })
@@ -243,26 +304,31 @@ export default class Balance extends React.Component {
     }
 
     setBalanceData(data) {
-        let outData = [];
-        data.forEach((item, i) => {
-            item._id = ++i;
-            item.bl_date = new Date(item.bl_date).toLocaleDateString("en-US") ;
-            item.bl_pow = item.bl_pow ? item.bl_pow.toFixed(3) : 0;
-            item.bl_price = item.bl_price ? item.bl_price.toFixed(2)*(-1) : 0;
-            if(item.bl_time) {
-                if(item.bl_time/3600 > 1){
-                    let hour = (item.bl_time/3600).toFixed(0);
-                    let min = ((item.bl_time%3600)/60).toFixed(0);
-                    item.bl_time = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
-                } else {
-                    let min = (item.bl_time/60).toFixed(0);
-                    item.bl_time = min >= 10  ? "0 : " + min : "0 : 0" + min;
-                }
-            }
-            delete item.bl_location;
-            outData.push(Object.values(item));
-        })
-        this.setState({ rows: outData})
+
+        // let outData = [];
+        // data.forEach((item, i) => {
+        //     item._id = ++i;
+        //     item.bl_date = new Date(item.bl_date).toLocaleDateString("en-US") ;
+        //     item.bl_pow = item.bl_pow ? item.bl_pow.toFixed(3) : 0;
+        //     item.bl_price = item.bl_price ? item.bl_price.toFixed(2)*(-1) : 0;
+        //     if(item.bl_time) {
+        //         if(item.bl_time/3600 > 1){
+        //             let hour = (item.bl_time/3600).toFixed(0);
+        //             let min = ((item.bl_time%3600)/60).toFixed(0);
+        //             item.bl_time = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
+        //         } else {
+        //             let min = (item.bl_time/60).toFixed(0);
+        //             item.bl_time = min >= 10  ? "0 : " + min : "0 : 0" + min;
+        //         }
+        //     }
+        //     this.setState({balance : item.bl_balance})
+        //     delete item.bl_location;
+        //     delete item.bl_balance;
+        //     outData.push(Object.values(item));
+        // })
+        // this.setState({ rows: outData});
+        // this.setState({ rowsTotal: outData});
+
     }
 
     componentDidMount() {
@@ -273,7 +339,7 @@ export default class Balance extends React.Component {
         return (
             <div>
                 <BalanceTable
-                    inputDataBalance={this.state.rows}/>
+                    inputDataBalance={this.state.data}/>
             </div>
         )
     }
