@@ -30,7 +30,7 @@ function ScootersTable(inputData) {
     const classes = useStyles();
     const scooters = inputData.inputDataScooter;
     const scootersQty = inputData.inputDataScooterQty;
-    const tableHeadData=["#", "ID","Type", "Charge level, W", "Status",  "Permission", "Station ID", "Actions"]
+    const tableHeadData=["№", "eScooter, ID","Type", "Energy, W", "Status",  "Permission", "On station, ID", "Actions"]
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
@@ -250,6 +250,8 @@ export default class Scooter extends React.Component {
         data.forEach((item, i) => {
             item._id = ++i;
             scootersQty++;
+            item.sc_id = "#" + item.sc_id;
+            item.sc_location = '#' + item.sc_location;
             if(item.sc_status === 1) {
                 chargingQty++;
                 item.sc_status = 'Charging';

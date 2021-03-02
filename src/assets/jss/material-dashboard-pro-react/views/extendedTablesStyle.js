@@ -25,7 +25,13 @@ const extendedTablesStyle = {
   },
   center: {
     textAlign: "center",
+    minWidth: "125px"
+    // width: "200px"
+  },
+  centerBalance: {
+    textAlign: "center",
     minWidth: "125px",
+    maxWidth: "300px !important"
     // width: "200px"
   },
   width: {

@@ -192,17 +192,21 @@ function BalanceTable(inputData) {
                             customCellClasses={[
                                 classes.left,
                                 classes.center,
+                                classes.centerBalance,
                                 classes.center,
                                 classes.center,
-                                classes.center]}
-                            customClassesForCells={[0,1,2,3,4]}
+                                classes.center
+                            ]}
+                            customClassesForCells={[0,1,2,3,4,5]}
                             customHeadCellClasses={[
                                 classes.left,
                                 classes.center,
+                                classes.centerBalance,
                                 classes.center,
                                 classes.center,
-                                classes.center]}
-                            customHeadClassesForCells={[0,1,2,3,4]}
+                                classes.center
+                            ]}
+                            customHeadClassesForCells={[0,1,2,3,4,5]}
                         />
                     </CardBody>
                 </Card>

@@ -35,7 +35,7 @@ function StationsTab(inputData) {
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
     const [selectedFilterLabel, setFilterLabel] = React.useState("All");
-    const tableHeadData = ["#", "Pad ID", "Status", "Info",  "Charge level, W", "Actions"]
+    const tableHeadData = ["№", "Pad ID", "Status", "Info",  "Charge level, W", "Actions"]
 
     const handleCountry = event => {
         setSelectCountry(event.target.value);
@@ -271,6 +271,7 @@ export default class Station extends React.Component {
             this.setState({ stationQty: i});
             item.arr_slots.forEach((sl, i) => {
                 sl._id= i;
+                sl.slot_id = "#"+ sl.slot_id;
                 countSlots++;
                 if(sl.slot_status === 0) {
                     availableSlot++;
