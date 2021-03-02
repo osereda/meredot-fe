@@ -138,12 +138,6 @@ export default function CustomTable(props) {
                     <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
                       {prop.amount[5]}
                     </TableCell>
-                    {tableHead.length - (prop.colspan - 0 + 2) > 0 ? (
-                        <TableCell
-                            className={classes.tableCell}
-                            colSpan={tableHead.length - (prop.colspan - 0 + 3)}
-                        />
-                    ) : null}
                   </TableRow>
             </>
 

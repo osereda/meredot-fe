@@ -75,7 +75,7 @@ function BalanceTable(inputData) {
         filteredDates = balance.slice()
         filteredDates.forEach((item, i) => {
         if(new Date(item.bl_date) - new Date((selectedDateFrom.valueOf()-864e5)) > 0 &&
-            new Date(selectedDateTo.toString()) - new Date(item.bl_date) >= 0
+            new Date((selectedDateTo.valueOf()+864e5)) - new Date(item.bl_date) >= 0
         ) {
             if(i===0) {
                 countDateFrom = item.bl_date;
@@ -111,15 +111,15 @@ function BalanceTable(inputData) {
                 + new Date(countDateTo).toLocaleDateString("en-US");
             balanceTotal[2]=countChargingCount;
             balanceTotal[3]=countPower;
-            balanceTotal[5]=countPrice*(-1);
+            balanceTotal[5]=countPrice.toFixed(2)*(-1);
 
             if (countTime / 3600 > 1) {
                 let hour = (countTime / 3600).toFixed(0);
                 let min = ((countTime% 3600) / 60).toFixed(0);
-                balanceTotal[4] = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
+                if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
             } else {
                 let min = (countTime / 60).toFixed(0);
-                balanceTotal[4] = min >= 10 ? "0 : " + min : "0 : 0" + min;
+                if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? "0 : " + min : "0 : 0" + min;
             }
         }
     })
