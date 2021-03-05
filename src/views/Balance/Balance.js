@@ -20,7 +20,7 @@ const useStyles = makeStyles(styles);
 
 function BalanceTable(inputData) {
 
-    const balanceTotal = ["A","B","C","D","E","C"];
+    const balanceTotal = [];
     const classes = useStyles();
     const balance = inputData.inputDataBalance;
     const total = {

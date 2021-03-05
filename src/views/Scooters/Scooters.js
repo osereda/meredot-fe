@@ -251,7 +251,9 @@ export default class Scooter extends React.Component {
             item._id = ++i;
             scootersQty++;
             item.sc_id = "#" + item.sc_id;
-            item.sc_location = '#' + item.sc_location;
+            if(item.sc_location !== '-') {
+                item.sc_location = '#' + item.sc_location;
+            }
             if(item.sc_status === 1) {
                 chargingQty++;
                 item.sc_status = 'Charging';
