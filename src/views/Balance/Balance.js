@@ -29,7 +29,7 @@ function BalanceTable(inputData) {
         amount: balanceTotal
     };
     let balanceRest = 0
-    const tableHeadData=["#", "Date", "Charging counter", "Power, kW",  "Time, h", "Price, $"]
+    const tableHeadData=["#", "Date", "Charging counter", "Power, kW/h",  "Time, h", "Price, $"]
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
     const [selectedFilterStat, setFilterSat] = React.useState('Last month');
@@ -102,7 +102,6 @@ function BalanceTable(inputData) {
                 }
             }
             delete item.bl_location;
-            delete item.bl_balance;
             outData.push(Object.values(item));
             FilteredData = outData;
             balanceTotal[0]=countN;
@@ -111,6 +110,9 @@ function BalanceTable(inputData) {
             balanceTotal[2]=countChargingCount;
             balanceTotal[3]=countPower;
             balanceTotal[5]=countPrice.toFixed(2)*(-1);
+            balanceRest = item.bl_balance + balanceTotal[5]
+            delete item.bl_balance;
+            console.log("balanceRest" + balanceRest);
 
             // if (countTime / 3600 > 1) {
             //     let hour = (countTime / 3600).toFixed(0);

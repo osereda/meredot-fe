@@ -30,7 +30,7 @@ function ScootersTable(inputData) {
     const classes = useStyles();
     const scooters = inputData.inputDataScooter;
     const scootersQty = inputData.inputDataScooterQty;
-    const tableHeadData=["№", "eScooter, ID","Type", "Energy, W", "Status",  "Permission", "On station, ID", "Actions"]
+    const tableHeadData=["№", "eScooter, ID","Type", "Power, W/h", "Status",  "Permission", "On station, ID", "Actions"]
     const [selectCountry, setSelectCountry] = React.useState("");
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);

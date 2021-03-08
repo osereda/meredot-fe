@@ -35,7 +35,7 @@ function StationsTab(inputData) {
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
     const [selectedFilterLabel, setFilterLabel] = React.useState("All");
-    const tableHeadData = ["№", "Pad ID", "Status", "Info",  "Charge level, W", "Actions"]
+    const tableHeadData = ["№", "Pad ID", "Status", "Info",  "Power, W/h", "Actions"]
 
     const handleCountry = event => {
         setSelectCountry(event.target.value);
