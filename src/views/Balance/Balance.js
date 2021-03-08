@@ -94,11 +94,12 @@ function BalanceTable(inputData) {
                 if (item.bl_time / 3600 > 1) {
                     let hour = Math.trunc(item.bl_time / 3600);
                     let min = Math.trunc((item.bl_time - (3600 * (hour-0)))/60);
-                    // let min1 = Math.trunc(((item.bl_time % 3600) * 60).toFixed(0);
-                    if(!isNaN(min-0))item.bl_time = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
+                    let sec = Math.trunc((((item.bl_time - (3600 * (hour-0)))/60) % 1)*60);
+                    if(!isNaN(min-0))item.bl_time = min >= 10 ? hour + " : " + min + " : " + sec : hour + " : 0" + min + " : " + sec;
                 } else {
                     let min = Math.trunc(item.bl_time / 60);
-                    if(!isNaN(min-0))item.bl_time = min >= 10 ? "0 : " + min : "0 : 0" + min;
+                    let sec = Math.trunc(((item.bl_time / 60) % 1)*60);
+                    if(!isNaN(min-0))item.bl_time = min >= 10 ? "0 : " + min + " : " + sec : "0 : 0" + min + " : " + sec;
                 }
             }
             balanceRest = item.bl_balance + countPrice.toFixed(2)*(-1);
@@ -110,7 +111,7 @@ function BalanceTable(inputData) {
             balanceTotal[1]=new Date(countDateFrom).toLocaleDateString("en-US") + " - "
                 + new Date(countDateTo).toLocaleDateString("en-US");
             balanceTotal[2]=countChargingCount;
-            balanceTotal[3]=countPower;
+            balanceTotal[3]=countPower.toFixed(3);
             balanceTotal[5]=countPrice.toFixed(2)*(-1);
 
             // if (countTime / 3600 > 1) {
@@ -126,13 +127,15 @@ function BalanceTable(inputData) {
     if (countTime / 3600 > 1) {
         let hour = Math.trunc((countTime / 3600));
         let min = Math.trunc((countTime - (3600 * (hour-0)))/60);
-        if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
+        let min1 = Math.trunc((countTime - (3600 * (hour-0)))/60);
+        let sec = Math.trunc((((countTime - (3600 * (hour-0)))/60) % 1)*60);
+        if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? hour + " : " + min + " : " + sec : hour + " : 0" + min + " : " + sec;
     } else {
-        let min = (countTime / 60).toFixed(0);
-        if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? "0 : " + min : "0 : 0" + min;
+        let min = Math.trunc(countTime / 60);
+        let sec = Math.trunc(((countTime / 60) % 1)*60);
+        if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? "0 : " + min + " : " + sec : "0 : 0" + min + " : " + sec;
     }
     FilteredData.push(total);
-
 
     return (
         <GridContainer>
