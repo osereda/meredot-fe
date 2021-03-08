@@ -101,7 +101,9 @@ function BalanceTable(inputData) {
                     if(!isNaN(min-0))item.bl_time = min >= 10 ? "0 : " + min : "0 : 0" + min;
                 }
             }
+            balanceRest = item.bl_balance + countPrice.toFixed(2)*(-1);
             delete item.bl_location;
+            delete item.bl_balance;
             outData.push(Object.values(item));
             FilteredData = outData;
             balanceTotal[0]=countN;
@@ -110,9 +112,6 @@ function BalanceTable(inputData) {
             balanceTotal[2]=countChargingCount;
             balanceTotal[3]=countPower;
             balanceTotal[5]=countPrice.toFixed(2)*(-1);
-            balanceRest = item.bl_balance + balanceTotal[5]
-            delete item.bl_balance;
-            console.log("balanceRest" + balanceRest);
 
             // if (countTime / 3600 > 1) {
             //     let hour = (countTime / 3600).toFixed(0);
