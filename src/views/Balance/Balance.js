@@ -85,23 +85,22 @@ function BalanceTable(inputData) {
             countN = i;
             countChargingCount+=item.bl_scooter_event;
             countPower+=item.bl_pow;
-            countTime+=item.bl_time;
+            countTime=countTime+item.bl_time;
             countPrice+=item.bl_price;
             balanceRest = item.bl_balance;
             item.bl_date = new Date(item.bl_date).toLocaleDateString("en-US");
-            // item.bl_pow = item.bl_pow ? item.bl_pow.toFixed(3) : 0;
             item.bl_price = item.bl_price ? item.bl_price.toFixed(2) * (-1) : 0;
             if (item.bl_time) {
                 if (item.bl_time / 3600 > 1) {
-                    let hour = (item.bl_time / 3600).toFixed(0);
-                    let min = ((item.bl_time % 3600) / 60).toFixed(0);
+                    let hour = Math.trunc(item.bl_time / 3600);
+                    let min = Math.trunc((item.bl_time - (3600 * (hour-0)))/60);
+                    // let min1 = Math.trunc(((item.bl_time % 3600) * 60).toFixed(0);
                     if(!isNaN(min-0))item.bl_time = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
                 } else {
                     let min = (item.bl_time / 60).toFixed(0);
                     if(!isNaN(min-0))item.bl_time = min >= 10 ? "0 : " + min : "0 : 0" + min;
                 }
             }
-            // this.setState({balance : item.bl_balance})
             delete item.bl_location;
             delete item.bl_balance;
             outData.push(Object.values(item));
@@ -113,16 +112,24 @@ function BalanceTable(inputData) {
             balanceTotal[3]=countPower;
             balanceTotal[5]=countPrice.toFixed(2)*(-1);
 
-            if (countTime / 3600 > 1) {
-                let hour = (countTime / 3600).toFixed(0);
-                let min = ((countTime% 3600) / 60).toFixed(0);
-                if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
-            } else {
-                let min = (countTime / 60).toFixed(0);
-                if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? "0 : " + min : "0 : 0" + min;
-            }
+            // if (countTime / 3600 > 1) {
+            //     let hour = (countTime / 3600).toFixed(0);
+            //     let min = ((countTime% 3600) / 60).toFixed(0);
+            //     if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
+            // } else {
+            //     let min = (countTime / 60).toFixed(0);
+            //     if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? "0 : " + min : "0 : 0" + min;
+            // }
         }
     })
+    if (countTime / 3600 > 1) {
+        let hour = Math.trunc((countTime / 3600));
+        let min = Math.trunc((countTime - (3600 * (hour-0)))/60);
+        if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
+    } else {
+        let min = (countTime / 60).toFixed(0);
+        if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? "0 : " + min : "0 : 0" + min;
+    }
     FilteredData.push(total);
 
 
