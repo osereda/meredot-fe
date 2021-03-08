@@ -97,7 +97,7 @@ function BalanceTable(inputData) {
                     // let min1 = Math.trunc(((item.bl_time % 3600) * 60).toFixed(0);
                     if(!isNaN(min-0))item.bl_time = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
                 } else {
-                    let min = (item.bl_time / 60).toFixed(0);
+                    let min = Math.trunc(item.bl_time / 60);
                     if(!isNaN(min-0))item.bl_time = min >= 10 ? "0 : " + min : "0 : 0" + min;
                 }
             }
