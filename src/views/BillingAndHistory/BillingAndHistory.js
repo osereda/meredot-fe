@@ -29,13 +29,13 @@ function BalanceTable(inputData) {
         amount: balanceTotal
     };
     let balanceRest = 0
-    const tableHeadData=["#", "Date", "Charging counter", "Power, kW/h",  "Time, h", "Price, $"]
+    const tableHeadData=["#", "Date", "Text", "Amount", "Balance"]
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
     const [selectedFilterStat, setFilterSat] = React.useState('Last month');
     let  FilteredData = [];
 
-    const [selectedDateFrom, setSelectedDateFrom] = React.useState(new Date('2021-02-02'));
+    const [selectedDateFrom, setSelectedDateFrom] = React.useState(new Date('2021-03-01'));
     const [selectedDateTo, setSelectedDateTo] = React.useState(new Date());
     const handleDateChange = (date) => {
         setSelectedDateTo(date);
@@ -72,69 +72,37 @@ function BalanceTable(inputData) {
     let countPrice = 0;
     if(balance && balance.length > 0)
         // console.log("balance"+balance);
-        filteredDates = balance.slice()
+        filteredDates = balance.slice();
     filteredDates.forEach((item, i) => {
-        if(new Date(item.bl_date) - new Date((selectedDateFrom.valueOf()-864e5)) > 0 &&
-            new Date((selectedDateTo.valueOf()+864e5)) - new Date(item.bl_date) >= 0
+        if(new Date(item.bah_date) - new Date((selectedDateFrom.valueOf()-864e5)) > 0 &&
+            new Date((selectedDateTo.valueOf()+864e5)) - new Date(item.bah_date) >= 0
         ) {
             if(i===0) {
-                countDateFrom = item.bl_date;
+                countDateFrom = item.bah_date;
             }
-            countDateTo = item.bl_date;
+            countDateTo = item.bah_date;
             item._id = ++i;
             countN = i;
-            countChargingCount+=item.bl_scooter_event;
-            countPower+=item.bl_pow;
             countTime=countTime+item.bl_time;
             countPrice+=item.bl_price;
             balanceRest = item.bl_balance;
-            item.bl_date = new Date(item.bl_date).toLocaleDateString("en-US");
-            item.bl_price = item.bl_price ? item.bl_price.toFixed(2) * (-1) : 0;
-            if (item.bl_time) {
-                if (item.bl_time / 3600 > 1) {
-                    let hour = Math.trunc(item.bl_time / 3600);
-                    let min = Math.trunc((item.bl_time - (3600 * (hour-0)))/60);
-                    let sec = Math.trunc((((item.bl_time - (3600 * (hour-0)))/60) % 1)*60);
-                    if(!isNaN(min-0))item.bl_time = min >= 10 ? hour + " : " + min + " : " + sec : hour + " : 0" + min + " : " + sec;
-                } else {
-                    let min = Math.trunc(item.bl_time / 60);
-                    let sec = Math.trunc(((item.bl_time / 60) % 1)*60);
-                    if(!isNaN(min-0))item.bl_time = min >= 10 ? "0 : " + min + " : " + sec : "0 : 0" + min + " : " + sec;
-                }
-            }
+            item.bah_date = new Date(item.bah_date).toLocaleDateString("en-US");
+            item.bah_balance_amount = item.bah_balance_amount ? item.bah_balance_amount.toFixed(2) * (-1) : 0;
             balanceRest = item.bl_balance + countPrice.toFixed(2)*(-1);
-            delete item.bl_location;
-            delete item.bl_balance;
+            delete item.bah_location;
+            delete item.bah_time;
+            delete item.bah_balance_total;
+            delete item.bah_balance_rest;
             outData.push(Object.values(item));
             FilteredData = outData;
             balanceTotal[0]=countN;
             balanceTotal[1]=new Date(countDateFrom).toLocaleDateString("en-US") + " - "
                 + new Date(countDateTo).toLocaleDateString("en-US");
             balanceTotal[2]=countChargingCount;
-            balanceTotal[3]=countPower.toFixed(3);
-            balanceTotal[5]=countPrice.toFixed(2)*(-1);
-
-            // if (countTime / 3600 > 1) {
-            //     let hour = (countTime / 3600).toFixed(0);
-            //     let min = ((countTime% 3600) / 60).toFixed(0);
-            //     if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
-            // } else {
-            //     let min = (countTime / 60).toFixed(0);
-            //     if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? "0 : " + min : "0 : 0" + min;
-            // }
+            balanceTotal[4]=countPrice.toFixed(2)*(-1);
         }
     })
-    if (countTime / 3600 > 1) {
-        let hour = Math.trunc((countTime / 3600));
-        let min = Math.trunc((countTime - (3600 * (hour-0)))/60);
-        let min1 = Math.trunc((countTime - (3600 * (hour-0)))/60);
-        let sec = Math.trunc((((countTime - (3600 * (hour-0)))/60) % 1)*60);
-        if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? hour + " : " + min + " : " + sec : hour + " : 0" + min + " : " + sec;
-    } else {
-        let min = Math.trunc(countTime / 60);
-        let sec = Math.trunc(((countTime / 60) % 1)*60);
-        if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? "0 : " + min + " : " + sec : "0 : 0" + min + " : " + sec;
-    }
+
     FilteredData.push(total);
 
     return (
@@ -299,7 +267,7 @@ export default class BillingAndHistory extends React.Component {
     }
 
     getBalanceData() {
-        fetch(configData.SERVER_URL+'balance/all')
+        fetch(configData.SERVER_URL+'bah/all')
             .then(response => {
                 if (!response.ok) {
                     console.log('error');
@@ -307,6 +275,7 @@ export default class BillingAndHistory extends React.Component {
                 return response.json();
             })
             .then((data) => {
+                console.log("ZZZZ");
                 this.setState({ data: data});
                 this.setBalanceData(data);
                 // this.setState({ rows: data})
