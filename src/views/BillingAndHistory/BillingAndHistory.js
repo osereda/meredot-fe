@@ -23,11 +23,11 @@ function BalanceTable(inputData) {
     const balanceTotal = [];
     const classes = useStyles();
     const balance = inputData.inputDataBalance;
-    const total = {
-        totalBalance: true,
-        colspan: "0",
-        amount: balanceTotal
-    };
+    // const total = {
+    //     totalBalance: true,
+    //     colspan: "0",
+    //     amount: balanceTotal
+    // };
     let balanceRest = 0
     const tableHeadData=["#", "Date", "Text", "Amount", "Balance"]
     const [selectCity, setSelectCity] = React.useState("");
@@ -103,7 +103,7 @@ function BalanceTable(inputData) {
         }
     })
 
-    FilteredData.push(total);
+    // FilteredData.push(total);
 
     return (
         <GridContainer>
@@ -220,7 +220,7 @@ function BalanceTable(inputData) {
                         <CardIcon color="rose">
                             <EuroIcon/>
                         </CardIcon>
-                        <h4 className={classes.cardIconTitle}>On balance - {balanceRest} $</h4>
+                        {/*<h4 className={classes.cardIconTitle}>On balance - {balanceRest} $</h4>*/}
                     </CardHeader>
                     <CardBody>
                         <Table
