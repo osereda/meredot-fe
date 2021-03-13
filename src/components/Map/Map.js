@@ -50,7 +50,7 @@ export default function MapCenterMark(inputGeoData) {
                     <Table
                         // tableHead={tableHeadData}
                         tableData={[
-                            [inputGeoData.geodata.st_id, inputGeoData.geodata.address, inputGeoData.geodata.countAvaSlot+"/"+ inputGeoData.geodata.countSlot]
+                            ["#"+inputGeoData.geodata.st_id, inputGeoData.geodata.address, inputGeoData.geodata.countAvaSlot+"/"+ inputGeoData.geodata.countSlot]
                         ]}
                         customCellClasses={[classes.left, classes.centerDashboard, classes.rightDashboard]}
                         customClassesForCells={[0, 1, 2]}

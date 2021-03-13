@@ -1,7 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Edit from "@material-ui/icons/Edit";
-import Close from "@material-ui/icons/Close";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Table from "components/Table/Table.js";
@@ -11,53 +9,49 @@ import CardBody from "components/Card/CardBody.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardHeader from "components/Card/CardHeader.js";
 import styles from "assets/jss/material-dashboard-pro-react/views/extendedTablesStyle.js";
-import BatteryChargingFullIcon from '@material-ui/icons/BatteryChargingFull';
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
-import ScooterImg from "@material-ui/icons/TwoWheeler";
 import configData from "../../config.json";
-import {
-    MuiPickersUtilsProvider,
-    KeyboardTimePicker,
-    KeyboardDatePicker,
-} from '@material-ui/pickers';
-import 'date-fns';
-
+import Grid from "@material-ui/core/Grid";
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 import EuroIcon from '@material-ui/icons/Euro';
-import DateFnsUtils from '@date-io/date-fns';
-import HistoryIcon from '@material-ui/icons/History';
 
 
 const useStyles = makeStyles(styles);
 
-function ScootersTable(inputData) {
+function BalanceTable(inputData) {
 
+    const balanceTotal = [];
     const classes = useStyles();
-    const scooters = inputData.inputDataScooter;
-    const scootersQty = inputData.inputDataScooterQty;
-    const tableHeadData=["#", "Date","City", "Charging events", "Power, kW",  "Time, h", "Price, $", "Actions"]
-    const [selectCountry, setSelectCountry] = React.useState("");
+    const balance = inputData.inputDataBalance;
+    const total = {
+        totalBalance: true,
+        colspan: "0",
+        amount: balanceTotal
+    };
+    let balanceRest = 0
+    const tableHeadData=["#", "Date", "Charging counter", "Power, kW/h",  "Time, h", "Price, $"]
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
     const [selectedFilterStat, setFilterSat] = React.useState('Last month');
     let  FilteredData = [];
 
-    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+    const [selectedDateFrom, setSelectedDateFrom] = React.useState(new Date('2021-02-02'));
+    const [selectedDateTo, setSelectedDateTo] = React.useState(new Date());
     const handleDateChange = (date) => {
-        setSelectedDate(date);
+        setSelectedDateTo(date);
     };
 
-    const handleCountry = event => {
-        setSelectCountry(event.target.value);
+    const handleDateChangeFrom = (date) => {
+        setSelectedDateFrom(date);
+    };
+
+    const handleDateChangeTo = (date) => {
+        setSelectedDateTo(date);
     };
 
     const handleCity = event => {
         setSelectCity(event.target.value);
     };
-
     const handleFilter = event => {
         switch (event) {
             case 'Last month': setFilter(1);setFilterSat('Last month');break;
@@ -67,210 +61,188 @@ function ScootersTable(inputData) {
         }
     };
 
-    const fillButtons = [
-        { color: "info", icon: BatteryChargingFullIcon },
-        { color: "success", icon: Edit },
-        { color: "danger", icon: Close }
-    ].map((prop, key) => {
-        return (
-            <Button color={prop.color} className={classes.actionButton} key={key} disabled>
-                <prop.icon className={classes.icon} />
-            </Button>
-        );
-    });
+    let filteredDates = [];
+    let outData = [];
+    let countN = 0;
+    let countDateFrom = 0;
+    let countDateTo = 0;
+    let countChargingCount = 0;
+    let countPower = 0;
+    let countTime = 0;
+    let countPrice = 0;
+    if(balance && balance.length > 0)
+        // console.log("balance"+balance);
+        filteredDates = balance.slice()
+    filteredDates.forEach((item, i) => {
+        if(new Date(item.bl_date) - new Date((selectedDateFrom.valueOf()-864e5)) > 0 &&
+            new Date((selectedDateTo.valueOf()+864e5)) - new Date(item.bl_date) >= 0
+        ) {
+            if(i===0) {
+                countDateFrom = item.bl_date;
+            }
+            countDateTo = item.bl_date;
+            item._id = ++i;
+            countN = i;
+            countChargingCount+=item.bl_scooter_event;
+            countPower+=item.bl_pow;
+            countTime=countTime+item.bl_time;
+            countPrice+=item.bl_price;
+            balanceRest = item.bl_balance;
+            item.bl_date = new Date(item.bl_date).toLocaleDateString("en-US");
+            item.bl_price = item.bl_price ? item.bl_price.toFixed(2) * (-1) : 0;
+            if (item.bl_time) {
+                if (item.bl_time / 3600 > 1) {
+                    let hour = Math.trunc(item.bl_time / 3600);
+                    let min = Math.trunc((item.bl_time - (3600 * (hour-0)))/60);
+                    let sec = Math.trunc((((item.bl_time - (3600 * (hour-0)))/60) % 1)*60);
+                    if(!isNaN(min-0))item.bl_time = min >= 10 ? hour + " : " + min + " : " + sec : hour + " : 0" + min + " : " + sec;
+                } else {
+                    let min = Math.trunc(item.bl_time / 60);
+                    let sec = Math.trunc(((item.bl_time / 60) % 1)*60);
+                    if(!isNaN(min-0))item.bl_time = min >= 10 ? "0 : " + min + " : " + sec : "0 : 0" + min + " : " + sec;
+                }
+            }
+            balanceRest = item.bl_balance + countPrice.toFixed(2)*(-1);
+            delete item.bl_location;
+            delete item.bl_balance;
+            outData.push(Object.values(item));
+            FilteredData = outData;
+            balanceTotal[0]=countN;
+            balanceTotal[1]=new Date(countDateFrom).toLocaleDateString("en-US") + " - "
+                + new Date(countDateTo).toLocaleDateString("en-US");
+            balanceTotal[2]=countChargingCount;
+            balanceTotal[3]=countPower.toFixed(3);
+            balanceTotal[5]=countPrice.toFixed(2)*(-1);
 
-    scooters.forEach(scooter => {
-        let arrInner = [];
-        arrInner = scooter.slice();
-        arrInner.push(fillButtons);
-        switch(selectedFilter) {
-            case 1: FilteredData.push(arrInner); break;
-            case 2: {scooter.forEach(item => {
-                if(item === "Charging") FilteredData.push(arrInner)
-            })
-            } break;
-            case 3: {scooter.forEach(item => {
-                if(item === "Charged") FilteredData.push(arrInner)
-            })
-            } break;
-            case 4: {scooter.forEach(item => {
-                if(item === "Not charging") FilteredData.push(arrInner)
-            })
-            } break;
+            // if (countTime / 3600 > 1) {
+            //     let hour = (countTime / 3600).toFixed(0);
+            //     let min = ((countTime% 3600) / 60).toFixed(0);
+            //     if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
+            // } else {
+            //     let min = (countTime / 60).toFixed(0);
+            //     if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? "0 : " + min : "0 : 0" + min;
+            // }
         }
     })
-    FilteredData = FilteredData.slice();
+    if (countTime / 3600 > 1) {
+        let hour = Math.trunc((countTime / 3600));
+        let min = Math.trunc((countTime - (3600 * (hour-0)))/60);
+        let min1 = Math.trunc((countTime - (3600 * (hour-0)))/60);
+        let sec = Math.trunc((((countTime - (3600 * (hour-0)))/60) % 1)*60);
+        if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? hour + " : " + min + " : " + sec : hour + " : 0" + min + " : " + sec;
+    } else {
+        let min = Math.trunc(countTime / 60);
+        let sec = Math.trunc(((countTime / 60) % 1)*60);
+        if(!isNaN(min-0)) balanceTotal[4] = min >= 10 ? "0 : " + min + " : " + sec : "0 : 0" + min + " : " + sec;
+    }
+    FilteredData.push(total);
 
     return (
         <GridContainer>
             <GridItem xs={12}>
                 <Card>
                     <CardBody>
-                        <GridItem xs={12} sm={12} md={10}>
-                            {/*<legend>Customisable Select</legend>*/}
-                            <GridContainer>
-                                <GridItem xs={8} sm={4} md={4} lg={4}>
-                                    <FormControl
-                                        fullWidth
-                                        className={classes.selectFormControl}
-                                    >
-                                        <InputLabel
-                                            htmlFor="simple-select"
-                                            className={classes.selectLabel}
-                                        >
-                                            Choose Country
-                                        </InputLabel>
-                                        <Select
-                                            MenuProps={{
-                                                className: classes.selectMenu
-                                            }}
-                                            classes={{
-                                                select: classes.select
-                                            }}
-                                            value={selectCountry}
-                                            onChange={handleCountry}
-                                            inputProps={{
-                                                name: "simpleSelect",
-                                                id: "simple-select"
-                                            }}
-                                        >
-                                            <MenuItem
-                                                disabled
-                                                classes={{
-                                                    root: classes.selectMenuItem
-                                                }}
-                                            >
-                                                Choose Country
-                                            </MenuItem>
-                                            <MenuItem
-                                                classes={{
-                                                    root: classes.selectMenuItem,
-                                                    selected: classes.selectMenuItemSelected
-                                                }}
-                                                value="2"
-                                            >
-                                                All
-                                            </MenuItem>
-                                            <MenuItem
-                                                classes={{
-                                                    root: classes.selectMenuItem,
-                                                    selected: classes.selectMenuItemSelected
-                                                }}
-                                                value="3"
-                                            >
-                                                Israel
-                                            </MenuItem>
 
-
-                                        </Select>
-                                    </FormControl>
-                                </GridItem>
-                                <GridItem xs={8} sm={4} md={4} lg={4}>
-                                    <FormControl  fullWidth   className={classes.selectFormControl}>
-                                        <InputLabel  htmlFor="simple-select" className={classes.selectLabel}>
-                                            Choose City
-                                        </InputLabel>
-                                        <Select
-                                            MenuProps={{
-                                                className: classes.selectMenu
-                                            }}
-                                            classes={{
-                                                select: classes.select
-                                            }}
-                                            value={selectCity}
-                                            onChange={handleCity}
-                                            inputProps={{
-                                                name: "simpleSelect",
-                                                id: "simple-select"
-                                            }}
-                                        >
-                                            <MenuItem disabled  classes={{root: classes.selectMenuItem }}>
-                                                Choose City
-                                            </MenuItem>
-                                            <MenuItem classes={{
-                                                root: classes.selectMenuItem,
-                                                selected: classes.selectMenuItemSelected
-                                            }}
-                                                      value="12"
-                                            >
-                                                All
-                                            </MenuItem>
-                                            <MenuItem
-                                                classes={{
-                                                    root: classes.selectMenuItem,
-                                                    selected: classes.selectMenuItemSelected
-                                                }}
-                                                value="13"
-                                            >
-                                                Tel Aviv
-                                            </MenuItem>
-                                        </Select>
-                                    </FormControl>
-
-                                </GridItem>
-                                <GridItem xs={8} sm={4} md={4} lg={4} alignItems="flex-end">
-                                    <FormControl  fullWidth   className={classes.selectFormControl}>
-                                        <CustomDropdown
-                                            hoverColor="info"
-                                            buttonText={selectedFilterStat}
-                                            buttonProps={{
-                                                round: true,
-                                                fullWidth: true,
-                                                style: { marginBottom: "0" },
-                                                color: "info"
-                                            }}
-                                            dropdownHeader="Select"
-                                            onClick={handleFilter}
-                                            dropdownList={[
-                                                "Last month",
-                                                "This month",
-                                                "Last week",
-                                                "This week"
-                                            ]}
-                                        />
-                                    </FormControl>
-                                </GridItem>
-                            </GridContainer>
-                        </GridItem>
-                        <GridItem xs={12} sm={12} md={12}>
-                            <GridContainer>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    {/*<Grid container justify="space-around">*/}
-                                    <GridItem>
+                        {/*<GridContainer justify="space-between">*/}
+                        {/*    <GridItem xs={12} sm={12} md={7}*/}
+                        {/*              container*/}
+                        {/*              direction="row"*/}
+                        {/*              justify="flex-start"*/}
+                        {/*              alignItems="flex-start"  >*/}
+                        {/*        <GridItem xs={10} sm={6} md={6} lg={5} >*/}
+                        {/*            <FormControl fullWidth className={classes.selectFormControl}>*/}
+                        {/*                <InputLabel htmlFor="uncontrolled-native">Choose City</InputLabel>*/}
+                        {/*                <NativeSelect*/}
+                        {/*                    defaultValue={11}*/}
+                        {/*                    inputProps={{*/}
+                        {/*                        name: 'name',*/}
+                        {/*                        id: 'uncontrolled-native',*/}
+                        {/*                    }}*/}
+                        {/*                    onChange={handleCity}*/}
+                        {/*                >*/}
+                        {/*                    <option value={11}>All</option>*/}
+                        {/*                    <option value={12}>Tel Aviv</option>*/}
+                        {/*                </NativeSelect>*/}
+                        {/*            </FormControl>*/}
+                        {/*        </GridItem>*/}
+                        {/*    </GridItem>*/}
+                        {/*    <GridItem xs={12} sm={10} md={4} lg={3}>*/}
+                        {/*        <Grid xs={12} sm={8} md={12} lg={12} >*/}
+                        {/*            <FormControl  fullWidth   className={classes.selectFormControl}>*/}
+                        {/*                <CustomDropdown*/}
+                        {/*                    hoverColor="info"*/}
+                        {/*                    buttonText={selectedFilterStat}*/}
+                        {/*                    buttonProps={{*/}
+                        {/*                        round: true,*/}
+                        {/*                        fullWidth: true,*/}
+                        {/*                        style: { marginBottom: "0" },*/}
+                        {/*                        color: "info"*/}
+                        {/*                    }}*/}
+                        {/*                    dropdownHeader="Select period"*/}
+                        {/*                    onClick={handleFilter}*/}
+                        {/*                    dropdownList={[*/}
+                        {/*                        "Last month",*/}
+                        {/*                        "This month",*/}
+                        {/*                        "Last week",*/}
+                        {/*                        "This week"*/}
+                        {/*                    ]}*/}
+                        {/*                />*/}
+                        {/*            </FormControl>*/}
+                        {/*        </Grid>*/}
+                        {/*    </GridItem>*/}
+                        {/*</GridContainer>*/}
+                        <GridContainer justify="space-between">
+                            <GridItem xs={10} sm={8} md={7}
+                                      container
+                                      direction="row"
+                                      justify="flex-start"
+                                      alignItems="flex-start"  >
+                                <GridItem xs={12} sm={8} md={6} lg={5}>
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                         <KeyboardDatePicker
                                             disableToolbar
+                                            maxDate={new Date()}
                                             variant="inline"
                                             format="MM/dd/yyyy"
                                             margin="normal"
                                             id="date-picker-inline"
-                                            label="Date from"
-                                            value={selectedDate}
-                                            onChange={handleDateChange}
+                                            label="Date From"
+                                            value={selectedDateFrom}
+                                            onChange={handleDateChangeFrom}
                                             KeyboardButtonProps={{
                                                 'aria-label': 'change date',
                                             }}
                                         />
-                                    </GridItem>
-                                    <GridItem>
+                                    </MuiPickersUtilsProvider>
+                                </GridItem>
+                                <GridItem xs={12} sm={8} md={6} lg={5} >
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                         <KeyboardDatePicker
                                             disableToolbar
+                                            // shouldDisableDate={isWeekend}
+                                            maxDate={new Date()}
                                             variant="inline"
                                             format="MM/dd/yyyy"
                                             margin="normal"
                                             id="date-picker-inline"
-                                            label="Date to"
-                                            value={selectedDate}
-                                            onChange={handleDateChange}
+                                            label="Date To"
+                                            value={selectedDateTo}
+                                            onChange={handleDateChangeTo}
                                             KeyboardButtonProps={{
                                                 'aria-label': 'change date',
                                             }}
                                         />
-                                    </GridItem>
-                                    {/*</Grid>*/}
-                                </MuiPickersUtilsProvider>
-                            </GridContainer>
-
-                        </GridItem>
+                                    </MuiPickersUtilsProvider>
+                                </GridItem>
+                            </GridItem>
+                            <GridItem xs={10} sm={10} md={4} lg={3}>
+                                <Grid xs={10} sm={8} md={12} lg={12} >
+                                    <Button color="info" disabled round className={classes.marginRight}>
+                                        Download
+                                    </Button>
+                                </Grid>
+                            </GridItem>
+                        </GridContainer>
                     </CardBody>
                 </Card>
             </GridItem>
@@ -278,18 +250,32 @@ function ScootersTable(inputData) {
                 <Card>
                     <CardHeader color="rose" icon>
                         <CardIcon color="rose">
-                            <HistoryIcon/>
+                            <EuroIcon/>
                         </CardIcon>
-                        {/*<h4 className={classes.cardIconTitle}>Scooters</h4>*/}
+                        <h4 className={classes.cardIconTitle}>On balance - {balanceRest} $</h4>
                     </CardHeader>
                     <CardBody>
                         <Table
                             tableHead = {tableHeadData}
                             tableData={FilteredData}
-                            customCellClasses={[classes.center, classes.right]}
-                            customClassesForCells={[6, 7]}
-                            customHeadCellClasses={[ classes.center, classes.right]}
-                            customHeadClassesForCells={[6, 7]}
+                            customCellClasses={[
+                                classes.left,
+                                classes.center,
+                                classes.centerBalance,
+                                classes.center,
+                                classes.center,
+                                classes.center
+                            ]}
+                            customClassesForCells={[0,1,2,3,4,5]}
+                            customHeadCellClasses={[
+                                classes.left,
+                                classes.center,
+                                classes.centerBalance,
+                                classes.center,
+                                classes.center,
+                                classes.center
+                            ]}
+                            customHeadClassesForCells={[0,1,2,3,4,5]}
                         />
                     </CardBody>
                 </Card>
@@ -302,16 +288,18 @@ export default class BillingAndHistory extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: {},
             rows:[],
-            rowsQty:[],
+            rowsTotal:[],
+            balance: 0
         };
 
-        this.getScooterData = this.getScooterData.bind(this);
+        this.getBalanceData = this.getBalanceData.bind(this);
 
     }
 
-    getScooterData() {
-        fetch(configData.SERVER_URL+'scooter/all')
+    getBalanceData() {
+        fetch(configData.SERVER_URL+'balance/all')
             .then(response => {
                 if (!response.ok) {
                     console.log('error');
@@ -319,58 +307,50 @@ export default class BillingAndHistory extends React.Component {
                 return response.json();
             })
             .then((data) => {
-                this.setScooterData(data);
+                this.setState({ data: data});
+                this.setBalanceData(data);
                 // this.setState({ rows: data})
             })
-            .then( setTimeout(this.getScooterData, 1000))
+            .then( setTimeout(this.getBalanceData, 700))
     }
 
-    setScooterData(data) {
-        let chargingQty = 0;
-        let notChargingQty = 0;
-        let grantedQty = 0;
-        let deniedQty = 0;
-        let scootersQty = 0;
-        let outData = [];
-        let outDataQty = [];
-        data.forEach((item, i) => {
-            item._id = ++i;
-            scootersQty++;
-            if(item.sc_status === 1) {
-                chargingQty++;
-                item.sc_status = 'Charging';
-            }
-            if(item.sc_status === 0 || item.sc_status === 3){
-                notChargingQty++;
-                item.sc_status = 'Not charging';
-            }
-            if(item.sc_perm === 1) {
-                grantedQty++;
-                item.sc_perm = 'Granted';
-            }
-            if(item.sc_perm === 0) {
-                deniedQty++;
-                item.sc_perm = 'Denied';
-            }
-            delete item.sc_operator;
-            outData.push(Object.values(item));
-        })
-        outDataQty.push(scootersQty, chargingQty, grantedQty);
-        this.setState({ rows: outData})
-        this.setState({ rowsQty: outDataQty})
+    setBalanceData(data) {
+
+        // let outData = [];
+        // data.forEach((item, i) => {
+        //     item._id = ++i;
+        //     item.bl_date = new Date(item.bl_date).toLocaleDateString("en-US") ;
+        //     item.bl_pow = item.bl_pow ? item.bl_pow.toFixed(3) : 0;
+        //     item.bl_price = item.bl_price ? item.bl_price.toFixed(2)*(-1) : 0;
+        //     if(item.bl_time) {
+        //         if(item.bl_time/3600 > 1){
+        //             let hour = (item.bl_time/3600).toFixed(0);
+        //             let min = ((item.bl_time%3600)/60).toFixed(0);
+        //             item.bl_time = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
+        //         } else {
+        //             let min = (item.bl_time/60).toFixed(0);
+        //             item.bl_time = min >= 10  ? "0 : " + min : "0 : 0" + min;
+        //         }
+        //     }
+        //     this.setState({balance : item.bl_balance})
+        //     delete item.bl_location;
+        //     delete item.bl_balance;
+        //     outData.push(Object.values(item));
+        // })
+        // this.setState({ rows: outData});
+        // this.setState({ rowsTotal: outData});
+
     }
 
     componentDidMount() {
-        this.getScooterData();
+        this.getBalanceData();
     }
 
     render() {
         return (
             <div>
-                <ScootersTable
-                    inputDataScooter={[]}
-                    inputDataScooterQty ={this.state.rowsQty}
-                />
+                <BalanceTable
+                    inputDataBalance={this.state.data}/>
             </div>
         )
     }
