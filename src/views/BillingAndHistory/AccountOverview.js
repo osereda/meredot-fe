@@ -14,6 +14,10 @@ import Grid from "@material-ui/core/Grid";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import EuroIcon from '@material-ui/icons/Euro';
+import DoneIcon from '@material-ui/icons/Done';
+import BatteryChargingFullIcon from "@material-ui/icons/BatteryChargingFull";
+import Edit from "@material-ui/icons/Edit";
+import Close from "@material-ui/icons/Close";
 
 
 const useStyles = makeStyles(styles);
@@ -29,7 +33,7 @@ function BalanceTable(inputData) {
     //     amount: balanceTotal
     // };
     let balanceRest = 0
-    const tableHeadData=["#", "Date", "Text", "Amount", "Balance"]
+    const tableHeadData=["#", "Date", "Receipt" ,"Text","Status" ,"Amount", "Account Balance"]
     const [selectCity, setSelectCity] = React.useState("");
     const [selectedFilter, setFilter] = React.useState(1);
     const [selectedFilterStat, setFilterSat] = React.useState('Last month');
@@ -44,11 +48,9 @@ function BalanceTable(inputData) {
     const handleDateChangeFrom = (date) => {
         setSelectedDateFrom(date);
     };
-
     const handleDateChangeTo = (date) => {
         setSelectedDateTo(date);
     };
-
     const handleCity = event => {
         setSelectCity(event.target.value);
     };
@@ -61,104 +63,33 @@ function BalanceTable(inputData) {
         }
     };
 
+    const status = (
+        <Button color="success" className={classes.actionButton}>
+            <DoneIcon />
+        </Button>
+    );
+
     let filteredDates = [];
     let outData = [];
-    let countN = 0;
-    let countDateFrom = 0;
-    let countDateTo = 0;
-    let countChargingCount = 0;
-    let countPower = 0;
-    let countTime = 0;
-    let countPrice = 0;
     if(balance && balance.length > 0)
-        // console.log("balance"+balance);
         filteredDates = balance.slice();
-    filteredDates.forEach((item, i) => {
-        if(new Date(item.bah_date) - new Date((selectedDateFrom.valueOf()-864e5)) > 0 &&
-            new Date((selectedDateTo.valueOf()+864e5)) - new Date(item.bah_date) >= 0
-        ) {
-            if(i===0) {
-                countDateFrom = item.bah_date;
+        filteredDates.forEach((item, i) => {
+            if(new Date(item.ao_date) - new Date((selectedDateFrom.valueOf()-864e5)) > 0 &&
+                new Date((selectedDateTo.valueOf()+864e5)) - new Date(item.ao_date) >= 0
+            ) {
+                item._id = ++i;
+                item.ao_date = new Date(item.ao_date).toLocaleDateString("en-US");
+                item.ao_status = status;
+                outData.push(Object.values(item));
+                FilteredData = outData;
             }
-            countDateTo = item.bah_date;
-            item._id = ++i;
-            countN = i;
-            countTime=countTime+item.bl_time;
-            countPrice+=item.bl_price;
-            balanceRest = item.bl_balance;
-            item.bah_date = new Date(item.bah_date).toLocaleDateString("en-US");
-            item.bah_balance_amount = item.bah_balance_amount ? item.bah_balance_amount.toFixed(2) * (-1) : 0;
-            balanceRest = item.bl_balance + countPrice.toFixed(2)*(-1);
-            delete item.bah_location;
-            delete item.bah_time;
-            delete item.bah_balance_total;
-            delete item.bah_balance_rest;
-            outData.push(Object.values(item));
-            FilteredData = outData;
-            balanceTotal[0]=countN;
-            balanceTotal[1]=new Date(countDateFrom).toLocaleDateString("en-US") + " - "
-                + new Date(countDateTo).toLocaleDateString("en-US");
-            balanceTotal[2]=countChargingCount;
-            balanceTotal[4]=countPrice.toFixed(2)*(-1);
-        }
-    })
-
-    // FilteredData.push(total);
+        })
 
     return (
         <GridContainer>
             <GridItem xs={12}>
                 <Card>
                     <CardBody>
-
-                        {/*<GridContainer justify="space-between">*/}
-                        {/*    <GridItem xs={12} sm={12} md={7}*/}
-                        {/*              container*/}
-                        {/*              direction="row"*/}
-                        {/*              justify="flex-start"*/}
-                        {/*              alignItems="flex-start"  >*/}
-                        {/*        <GridItem xs={10} sm={6} md={6} lg={5} >*/}
-                        {/*            <FormControl fullWidth className={classes.selectFormControl}>*/}
-                        {/*                <InputLabel htmlFor="uncontrolled-native">Choose City</InputLabel>*/}
-                        {/*                <NativeSelect*/}
-                        {/*                    defaultValue={11}*/}
-                        {/*                    inputProps={{*/}
-                        {/*                        name: 'name',*/}
-                        {/*                        id: 'uncontrolled-native',*/}
-                        {/*                    }}*/}
-                        {/*                    onChange={handleCity}*/}
-                        {/*                >*/}
-                        {/*                    <option value={11}>All</option>*/}
-                        {/*                    <option value={12}>Tel Aviv</option>*/}
-                        {/*                </NativeSelect>*/}
-                        {/*            </FormControl>*/}
-                        {/*        </GridItem>*/}
-                        {/*    </GridItem>*/}
-                        {/*    <GridItem xs={12} sm={10} md={4} lg={3}>*/}
-                        {/*        <Grid xs={12} sm={8} md={12} lg={12} >*/}
-                        {/*            <FormControl  fullWidth   className={classes.selectFormControl}>*/}
-                        {/*                <CustomDropdown*/}
-                        {/*                    hoverColor="info"*/}
-                        {/*                    buttonText={selectedFilterStat}*/}
-                        {/*                    buttonProps={{*/}
-                        {/*                        round: true,*/}
-                        {/*                        fullWidth: true,*/}
-                        {/*                        style: { marginBottom: "0" },*/}
-                        {/*                        color: "info"*/}
-                        {/*                    }}*/}
-                        {/*                    dropdownHeader="Select period"*/}
-                        {/*                    onClick={handleFilter}*/}
-                        {/*                    dropdownList={[*/}
-                        {/*                        "Last month",*/}
-                        {/*                        "This month",*/}
-                        {/*                        "Last week",*/}
-                        {/*                        "This week"*/}
-                        {/*                    ]}*/}
-                        {/*                />*/}
-                        {/*            </FormControl>*/}
-                        {/*        </Grid>*/}
-                        {/*    </GridItem>*/}
-                        {/*</GridContainer>*/}
                         <GridContainer justify="space-between">
                             <GridItem xs={10} sm={8} md={7}
                                       container
@@ -232,18 +163,20 @@ function BalanceTable(inputData) {
                                 classes.centerBalance,
                                 classes.center,
                                 classes.center,
+                                classes.center,
                                 classes.center
                             ]}
-                            customClassesForCells={[0,1,2,3,4,5]}
+                            customClassesForCells={[0,1,2,3,4,5,6]}
                             customHeadCellClasses={[
                                 classes.left,
                                 classes.center,
                                 classes.centerBalance,
                                 classes.center,
                                 classes.center,
+                                classes.center,
                                 classes.center
                             ]}
-                            customHeadClassesForCells={[0,1,2,3,4,5]}
+                            customHeadClassesForCells={[0,1,2,3,4,5,6]}
                         />
                     </CardBody>
                 </Card>
@@ -252,7 +185,7 @@ function BalanceTable(inputData) {
     );
 }
 
-export default class BillingAndHistory extends React.Component {
+export default class AccountOverview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -267,7 +200,7 @@ export default class BillingAndHistory extends React.Component {
     }
 
     getBalanceData() {
-        fetch(configData.SERVER_URL+'bah/all')
+        fetch(configData.SERVER_URL+'ao/all')
             .then(response => {
                 if (!response.ok) {
                     console.log('error');

@@ -48,7 +48,7 @@ import Stations from 'views/Stations/Stations';
 import Scooters from 'views/Scooters/Scooters';
 import Balance from 'views/Balance/Balance';
 import StationRating from 'views/StationRating/StationRating';
-import BillingAndHistory from 'views/BillingAndHistory/BillingAndHistory';
+import AccountOverview from 'views/BillingAndHistory/AccountOverview';
 import NewMassage from 'views/NewMassage/NewMassage';
 import IncomingMessage from 'views/IncomingMessage/IncomingMessage';
 import OutgoingMessage from 'views/OutgoingMessage/OutgoingMessage';
@@ -93,11 +93,11 @@ var dashRoutes = [
   //   layout: "/admin"
   // },
   {
-    path: "/bah",
-    name: "Billing & History",
-    mini: "BH",
+    path: "/ao",
+    name: "Account Overview",
+    mini: "AO",
     icon: HistoryIcon,
-    component: BillingAndHistory,
+    component: AccountOverview,
     layout: "/admin"
   },
   {
