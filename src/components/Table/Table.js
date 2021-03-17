@@ -143,6 +143,33 @@ export default function CustomTable(props) {
 
               );
             }
+            if (prop.accountOverview) {
+              return (
+                  <>
+                    <TableRow>
+                      <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                        {prop.amount[1]}
+                      </TableCell>
+                      <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                        {prop.amount[3]}
+                      </TableCell>
+                      <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                        {prop.amount[4]}
+                      </TableCell>
+                      <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                        {prop.amount[5]}
+                      </TableCell>
+                      <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                        {prop.amount[6]}
+                      </TableCell>
+                      <TableCell className={classes.tableCellTotal + " " + classes.tableCellAmountBalance}>
+                        {prop.text1}
+                      </TableCell>
+                    </TableRow>
+                  </>
+
+              );
+            }
             if (prop.purchase) {
               return (
                 <TableRow key={key} hover={hover} className={tableRowClasses}>

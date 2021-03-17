@@ -309,36 +309,11 @@ export default class Balance extends React.Component {
             .then((data) => {
                 this.setState({ data: data});
                 this.setBalanceData(data);
-                // this.setState({ rows: data})
             })
             .then( setTimeout(this.getBalanceData, 700))
     }
 
     setBalanceData(data) {
-
-        // let outData = [];
-        // data.forEach((item, i) => {
-        //     item._id = ++i;
-        //     item.bl_date = new Date(item.bl_date).toLocaleDateString("en-US") ;
-        //     item.bl_pow = item.bl_pow ? item.bl_pow.toFixed(3) : 0;
-        //     item.bl_price = item.bl_price ? item.bl_price.toFixed(2)*(-1) : 0;
-        //     if(item.bl_time) {
-        //         if(item.bl_time/3600 > 1){
-        //             let hour = (item.bl_time/3600).toFixed(0);
-        //             let min = ((item.bl_time%3600)/60).toFixed(0);
-        //             item.bl_time = min >= 10 ? hour + " : " + min : hour + " : 0" + min;
-        //         } else {
-        //             let min = (item.bl_time/60).toFixed(0);
-        //             item.bl_time = min >= 10  ? "0 : " + min : "0 : 0" + min;
-        //         }
-        //     }
-        //     this.setState({balance : item.bl_balance})
-        //     delete item.bl_location;
-        //     delete item.bl_balance;
-        //     outData.push(Object.values(item));
-        // })
-        // this.setState({ rows: outData});
-        // this.setState({ rowsTotal: outData});
 
     }
 

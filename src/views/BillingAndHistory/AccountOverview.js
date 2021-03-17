@@ -24,14 +24,15 @@ const useStyles = makeStyles(styles);
 
 function BalanceTable(inputData) {
 
-    const balanceTotal = [];
+    const closingBalanceArr = [null, null, null, null, null,"Closing balance"];
     const classes = useStyles();
     const balance = inputData.inputDataBalance;
-    // const total = {
-    //     totalBalance: true,
-    //     colspan: "0",
-    //     amount: balanceTotal
-    // };
+    const closingBalance = {
+        accountOverview: true,
+        colspan: "0",
+        amount: closingBalanceArr,
+        text1: "Closing balance"
+    };
     let balanceRest = 0
     const tableHeadData=["#", "Date", "Receipt" ,"Text","Status" ,"Amount", "Account Balance"]
     const [selectCity, setSelectCity] = React.useState("");
@@ -44,7 +45,6 @@ function BalanceTable(inputData) {
     const handleDateChange = (date) => {
         setSelectedDateTo(date);
     };
-
     const handleDateChangeFrom = (date) => {
         setSelectedDateFrom(date);
     };
@@ -71,6 +71,7 @@ function BalanceTable(inputData) {
 
     let filteredDates = [];
     let outData = [];
+    let tmpClosingBalance = 0;
     if(balance && balance.length > 0)
         filteredDates = balance.slice();
         filteredDates.forEach((item, i) => {
@@ -82,8 +83,14 @@ function BalanceTable(inputData) {
                 item.ao_status = status;
                 outData.push(Object.values(item));
                 FilteredData = outData;
+                tmpClosingBalance = item.ao_balance;
             }
         })
+    closingBalanceArr.push(tmpClosingBalance);
+
+    FilteredData.push(closingBalanceArr);
+
+
 
     return (
         <GridContainer>
