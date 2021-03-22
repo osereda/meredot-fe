@@ -52,6 +52,9 @@ import AccountOverview from 'views/BillingAndHistory/AccountOverview';
 import NewMassage from 'views/NewMassage/NewMassage';
 import IncomingMessage from 'views/IncomingMessage/IncomingMessage';
 import OutgoingMessage from 'views/OutgoingMessage/OutgoingMessage';
+import React from "react";
+import ElectricScooterIcon from "@material-ui/icons/ElectricScooter";
+
 
 var dashRoutes = [
   {
@@ -72,7 +75,7 @@ var dashRoutes = [
     path: "/sc",
     name: "Scooters",
     mini: "Sc",
-    icon: TwoWheelerIcon,
+    icon: ElectricScooterIcon,
     component: Scooters,
     layout: "/admin"
   },

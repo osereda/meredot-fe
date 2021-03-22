@@ -18,10 +18,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
-import ScooterImg from "@material-ui/icons/TwoWheeler";
 import configData from "../../config.json";
 import Grid from "@material-ui/core/Grid";
 import {NativeSelect} from "@material-ui/core";
+import scooterImg from "../../assets/img/scooter.png";
+import ElectricScooterIcon from "@material-ui/icons/ElectricScooter";
 
 const useStyles = makeStyles(styles);
 
@@ -174,9 +175,10 @@ function ScootersTable(inputData) {
             </GridItem>
             <GridItem xs={12}>
                 <Card>
-                    <CardHeader color="rose" icon>
+                    <CardHeader color="rose" stats icon>
                         <CardIcon color="rose">
-                            <ScooterImg/>
+                            <ElectricScooterIcon/>
+                            {/*<img className={classes.cardScooterIcon} src={scooterImg}/>*/}
                         </CardIcon>
                         {/*<h4 className={classes.cardIconTitle}>Scooters</h4>*/}
                     </CardHeader>

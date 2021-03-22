@@ -26,6 +26,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import scooterImg from "../../assets/img/scooter.png";
+import ElectricScooterIcon from '@material-ui/icons/ElectricScooter';
 
 import {
   dailySalesChart,
@@ -50,7 +52,7 @@ function DashboardInfo(data) {
 
   const dataStation = data.dataCount;
   const dataMaps = data.dataForMap;
-
+  const balance = data.balance;
 
   const [geodata, setGeodata] = useState([]);
   const stationQty=dataStation[0];
@@ -106,15 +108,15 @@ function DashboardInfo(data) {
         <GridItem xs={12} sm={6} md={3}>
           <Card>
             <CardHeader color="success" stats icon>
-              <CardIcon color="success">
-                <Scooter/>
+              <CardIcon color="success" >
+                <ElectricScooterIcon/>
               </CardIcon>
               <p className={classes.cardCategory}>Scooters</p>
               <h3 className={classes.cardTitle}>{chargeScooterQty}/{scooterQty}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                <Scooter />
+                <Slot />
                 {chargeScooterQty} ON CHARGE
               </div>
             </CardFooter>
@@ -127,12 +129,12 @@ function DashboardInfo(data) {
                 <Euro />
               </CardIcon>
               <p className={classes.cardCategory}>Balance</p>
-              <h3 className={classes.cardTitle}>100 $</h3>
+              <h3 className={classes.cardTitle}>{-balance} $</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
                 <Update />
-                END 24/06/20
+                END 31/09/2021
               </div>
             </CardFooter>
           </Card>
@@ -308,10 +310,12 @@ export default class Dashboard extends React.Component {
       dataQty: [],
       dataForMap: [],
       scooterCount: 0,
-      chargingScooterCount: 0
+      chargingScooterCount: 0,
+      balance: 0
     };
     this.GetStationData = this.GetStationData.bind(this);
     this.getScooterData = this.getScooterData.bind(this);
+    this.getBalanceData = this.getBalanceData.bind(this);
   }
 
   GetStationData() {
@@ -389,15 +393,39 @@ export default class Dashboard extends React.Component {
     this.setState({dataForMap: dataInfoForMap});
   }
 
+  getBalanceData() {
+    fetch(configData.SERVER_URL+'balance/all')
+        .then(response => {
+          if (!response.ok) {
+            console.log('error');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.setBalanceData(data);
+        })
+        .then( setTimeout(this.getBalanceData, 5000))
+  }
+
+  setBalanceData(data) {
+    let totalBalance = 0;
+    data.forEach(item => {
+      totalBalance+=item.bl_price;
+    })
+
+    this.setState({balance: (100 - totalBalance)});
+  }
+
   componentDidMount() {
     this.GetStationData();
     this.getScooterData();
+    this.getBalanceData();
   }
 
   render() {
     return (
         <div>
-          <DashboardInfo dataCount = {this.state.dataQty} dataForMap = {this.state.dataForMap}/>
+          <DashboardInfo dataCount = {this.state.dataQty} dataForMap = {this.state.dataForMap} balance = {this.state.balance}/>
         </div>
     )
   }

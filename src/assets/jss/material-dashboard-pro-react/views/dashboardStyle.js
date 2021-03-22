@@ -38,8 +38,43 @@ const dashboardStyle = {
     textAlign: "center",
     color: grayColor[0]
   },
+  textScooter: {
+    color: grayColor[0],
+    textAlign: "left",
+    position: "absolute",
+    marginLeft: "23px",
+    fontSize: "12px",
+    lineHeight: "22px",
+    display: "inline-flex",
+  },
   stats: {
     color: grayColor[0],
+    fontSize: "12px",
+    lineHeight: "22px",
+    display: "inline-flex",
+    "& svg": {
+      position: "relative",
+      top: "4px",
+      width: "16px",
+      height: "16px",
+      marginRight: "3px"
+    },
+    "& .fab,& .fas,& .far,& .fal,& .material-icons": {
+      position: "relative",
+      top: "4px",
+      fontSize: "16px",
+      marginRight: "3px"
+    }
+  },
+  cardScooterIcon: {
+    maxWidth: "56px",
+    width: "56px",
+    height: "56px",
+  },
+  stats1: {
+    color: grayColor[0],
+    width: "15px",
+    height: "15px",
     fontSize: "12px",
     lineHeight: "22px",
     display: "inline-flex",
