@@ -21,7 +21,6 @@ import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
 import configData from "../../config.json";
 import Grid from "@material-ui/core/Grid";
 import {NativeSelect} from "@material-ui/core";
-import scooterImg from "../../assets/img/scooter.png";
 import ElectricScooterIcon from "@material-ui/icons/ElectricScooter";
 
 const useStyles = makeStyles(styles);
