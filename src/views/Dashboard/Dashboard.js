@@ -26,7 +26,6 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import scooterImg from "../../assets/img/scooter.png";
 import ElectricScooterIcon from '@material-ui/icons/ElectricScooter';
 
 import {
